@@ -1,0 +1,42 @@
+# ---- Django ----
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# ---- Environment / secrets ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- Virtualenv ----
+.venv/
+venv/
+env/
+ENV/
+
+# ---- ngrok ----
+.ngrok2/
+ngrok.yml
+
+# ---- Editors / OS ----
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---- Testing / build ----
+.coverage
+htmlcov/
+.pytest_cache/
+*.egg-info/
+dist/
+build/

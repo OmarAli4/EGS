@@ -1,0 +1,714 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سيرفيس باي | Service Bay - مركز الصيانة السريعة المعتمد</title>
+    <meta name="description" content="منصة سيرفيس باي لحجز خدمات صيانة السيارات الفورية بأعلى معايير الدقة والشفافية. اختر خدمتك، سيارتك، والموعد المناسب خلال ثوانٍ.">
+
+    <!-- Fonts: Zain & IBM Plex Sans Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Zain:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Custom CSS Design System -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <!-- 1. SPLASH SCREEN / CAR DIAGNOSTIC LOADER -->
+    <div class="splash-overlay" id="splashLoader">
+        <div class="splash-content">
+            <div class="car-telemetry-box">
+                <svg class="car-scanner-svg" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 65 L40 65 L55 40 L130 40 L155 65 L180 65 C185 65 190 70 190 75 L190 80 L10 80 L10 75 C10 70 15 65 20 65 Z" stroke="#1E6BE0" stroke-width="3.5" stroke-linejoin="round"/>
+                    <circle cx="45" cy="80" r="12" fill="#132132" stroke="#F5A524" stroke-width="3.5"/>
+                    <circle cx="150" cy="80" r="12" fill="#132132" stroke="#F5A524" stroke-width="3.5"/>
+                    <path d="M60 44 L125 44 L115 60 L60 60 Z" stroke="#1E9E6A" stroke-width="2.5"/>
+                    <line class="laser-beam" x1="0" y1="10" x2="200" y2="10" stroke="#F5A524" stroke-width="3"/>
+                </svg>
+            </div>
+            <div class="splash-brand">SERVICE BAY</div>
+            <div class="splash-sub">جاري فحص حالة المركز وتشغيل المواعيد...</div>
+            <div class="splash-progress-track">
+                <div class="splash-progress-bar" id="splashBar"></div>
+            </div>
+            <div class="splash-counter tabular" id="splashPercent">0%</div>
+        </div>
+    </div>
+
+    <!-- 2. HEADER NAVIGATION BAR -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand-logo" onclick="showMainPortal()">
+                <div class="logo-badge">
+                    <i data-feather="tool"></i>
+                </div>
+                <div class="brand-titles">
+                    <span class="brand-name">SERVICE BAY</span>
+                    <span class="brand-sub">سيرفيس باي • ورشة الصيانة المعتمدة</span>
+                </div>
+            </div>
+
+            <div class="header-meta">
+                <div class="status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span>المركز مفتوح الان</span>
+                </div>
+                
+                <!-- Auth Status Button -->
+                <div class="user-account-menu" id="authBtnGroup">
+                    <button class="login-trigger-btn" id="authBtn" onclick="openLoginModal()">
+                        <i data-feather="user-check"></i>
+                        <span id="authBtnText">تسجيل الدخول / حساب جديد</span>
+                    </button>
+                </div>
+
+                <a href="tel:19900" class="hotline-btn">
+                    <i data-feather="phone-call"></i>
+                    <span>19900</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ADMIN CONTROL CENTER VIEW -->
+    <div class="admin-view-pane" id="adminViewPane">
+        <div class="admin-header">
+            <div class="admin-title-block">
+                <h2><i data-feather="layout"></i> لوحة تحكم إدارة ورشة سيرفيس باي (Control Center)</h2>
+                <p>متابعة أوامر العمل الفورية، تغيير حالات الصيانة، وإحصائيات الإيرادات الحية.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="logoutAccount()">
+                <i data-feather="log-out"></i>
+                <span>تسجيل الخروج من الأدمن</span>
+            </button>
+        </div>
+
+        <div class="admin-stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon icon-blue"><i data-feather="file-text"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">إجمالي أوامر العمل</div>
+                    <div class="stat-val tabular" id="adminTotalCount">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-amber"><i data-feather="dollar-sign"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">إجمالي إيرادات الصيانة</div>
+                    <div class="stat-val tabular" id="adminTotalRevenue">0 ج.م</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-green"><i data-feather="check-circle"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">الحالات النشطة والمكتملة</div>
+                    <div class="stat-val tabular" id="adminActiveCount">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-table-card">
+            <h3><i data-feather="list"></i> جدول متابعة أوامر العمل والمواعيد</h3>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>رقم أمر العمل</th>
+                            <th>العميل والهاتف</th>
+                            <th>السيارة</th>
+                            <th>الخدمة المختارة</th>
+                            <th>الفرع والتاريخ</th>
+                            <th>المبلغ</th>
+                            <th>الحالة</th>
+                            <th>إجراءات التحكم</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminBookingsTbody">
+                        <!-- Populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN PORTAL CONTAINER -->
+    <main class="main-layout" id="mainPortalLayout">
+        
+        <!-- INFINITE SMOOTH CIRCULAR CAROUSEL -->
+        <section class="carousel-section">
+            <div class="carousel-header">
+                <div class="sec-title">
+                    <i data-feather="repeat"></i>
+                    <span>الخدمات الأكثر طلباً ومبيعاً (Best Sellers)</span>
+                </div>
+            </div>
+
+            <div class="carousel-track-wrapper" id="carouselWrapper">
+                <div class="carousel-track infinite-loop" id="carouselTrack">
+                    {% for ps in popular_services %}
+                    <div class="carousel-card" onclick="quickSelectService('{{ ps.id }}')">
+                        <div class="carousel-badge"><i data-feather="award"></i> الأكثر طلباً</div>
+                        <div class="carousel-icon"><i data-feather="tool"></i></div>
+                        <h4 class="carousel-title">{{ ps.title }}</h4>
+                        <p class="carousel-desc">{{ ps.description|truncatewords:10 }}</p>
+                        <div class="carousel-footer">
+                            <span class="carousel-duration"><i data-feather="clock"></i> {{ ps.duration_mins }} دقيقة</span>
+                            <span class="carousel-price tabular">{{ ps.price }} ج.م</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% for ps in popular_services %}
+                    <div class="carousel-card" onclick="quickSelectService('{{ ps.id }}')">
+                        <div class="carousel-badge"><i data-feather="award"></i> الأكثر طلباً</div>
+                        <div class="carousel-icon"><i data-feather="tool"></i></div>
+                        <h4 class="carousel-title">{{ ps.title }}</h4>
+                        <p class="carousel-desc">{{ ps.description|truncatewords:10 }}</p>
+                        <div class="carousel-footer">
+                            <span class="carousel-duration"><i data-feather="clock"></i> {{ ps.duration_mins }} دقيقة</span>
+                            <span class="carousel-price tabular">{{ ps.price }} ج.م</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <div class="content-wrapper">
+
+            <!-- Left Column: Hero & Booking Stepper -->
+            <div class="booking-column">
+                
+                <!-- Hero Banner -->
+                <section class="hero-section">
+                    <div class="hero-content">
+                        <div class="hero-pill">
+                            <i data-feather="shield"></i>
+                            <span>ضمان حقيقي 6 أشهر على جميع الأعمال</span>
+                        </div>
+                        <h1 class="hero-title">صيانة سيارتك بكل دقة وشفافية. بدون مفاجآت.</h1>
+                        <p class="hero-subtitle">اختر نوع الصيانة، حدد سيارتك، واحجز موعدك فوراً بعد تسجيل الدخول بـ حسابك المعتمد.</p>
+                    </div>
+                </section>
+
+                <!-- MANDATORY ACCOUNT NOTICE -->
+                <div class="account-notice-banner" id="authNoticeBanner">
+                    <div class="notice-icon"><i data-feather="lock"></i></div>
+                    <div class="notice-text">
+                        <strong>نظام حسابات سيرفيس باي:</strong> يلزم تسجيل الدخول أو إنشاء حساب جديد لتأكيد حجز الصيانة واستلام كارت العمل الرقمي.
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="openLoginModal()">تسجيل الدخول الأن</button>
+                </div>
+
+                <!-- Step Progress Tracker -->
+                <div class="stepper-bar">
+                    <div class="stepper-track">
+                        <div class="stepper-fill" id="stepperFill"></div>
+                    </div>
+                    <div class="steps-grid">
+                        <div class="step-item active" id="stepIndicator-1" onclick="navigateToStep(1)">
+                            <div class="step-node">1</div>
+                            <span class="step-label">الخدمة</span>
+                        </div>
+                        <div class="step-item" id="stepIndicator-2" onclick="navigateToStep(2)">
+                            <div class="step-node">2</div>
+                            <span class="step-label">السيارة</span>
+                        </div>
+                        <div class="step-item" id="stepIndicator-3" onclick="navigateToStep(3)">
+                            <div class="step-node">3</div>
+                            <span class="step-label">الموعد والموقع</span>
+                        </div>
+                        <div class="step-item" id="stepIndicator-4" onclick="navigateToStep(4)">
+                            <div class="step-node">4</div>
+                            <span class="step-label">تأكيد الحجز</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 1: SERVICE SELECTION -->
+                <section class="step-pane active" id="stepPane-1">
+                    <div class="pane-header">
+                        <h2>1. اختر خدمة الصيانة المطلوب تنفيذها</h2>
+                        <p>أسعار صريحة تشمل قطع الغيار الأصلية وأجور الفنيين مع تقرير رقمي مفصل.</p>
+                    </div>
+
+                    <!-- CATEGORY FILTER TABS -->
+                    <div class="category-tabs" id="categoryTabs">
+                        <button class="cat-pill active" onclick="filterServices('all', this)"><i data-feather="grid"></i> الكل</button>
+                        <button class="cat-pill" onclick="filterServices('maintenance', this)"><i data-feather="settings"></i> صيانة دورية</button>
+                        <button class="cat-pill" onclick="filterServices('brakes', this)"><i data-feather="disc"></i> فرامل وسلامة</button>
+                        <button class="cat-pill" onclick="filterServices('ac', this)"><i data-feather="wind"></i> تكييف وتبريد</button>
+                        <button class="cat-pill" onclick="filterServices('scan', this)"><i data-feather="cpu"></i> كشف كمبيوتر</button>
+                        <button class="cat-pill" onclick="filterServices('engine', this)"><i data-feather="droplet"></i> محرك وزيوت</button>
+                    </div>
+
+                    <div class="services-grid" id="servicesGrid">
+                        {% for s in services %}
+                        <div class="service-card {% if forloop.first %}selected{% endif %}" 
+                             data-id="{{ s.id }}" 
+                             data-category="{{ s.category }}"
+                             data-title="{{ s.title }}" 
+                             data-price="{{ s.price }}" 
+                             data-duration="{{ s.duration_mins }}"
+                             onclick="selectService(this)">
+                            {% if s.is_popular %}
+                            <div class="popular-tag">الأكثر طلباً</div>
+                            {% endif %}
+                            <div class="service-head">
+                                <div class="service-icon">
+                                    <i data-feather="tool"></i>
+                                </div>
+                                <div class="service-price-block">
+                                    <span class="currency">ج.م</span>
+                                    <span class="amount tabular">{{ s.price }}</span>
+                                </div>
+                            </div>
+                            <h3 class="service-title">{{ s.title }}</h3>
+                            <p class="service-desc">{{ s.description }}</p>
+                            <div class="service-meta">
+                                <span class="duration-badge"><i data-feather="clock"></i> {{ s.duration_mins }} دقيقة</span>
+                            </div>
+                            <ul class="features-list">
+                                {% for feat in s.features_list %}
+                                <li><i data-feather="check"></i> {{ feat }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% empty %}
+                        <div class="loading-placeholder">جاري تحميل خدمات الصيانة...</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="step-actions">
+                        <div></div>
+                        <button class="btn btn-primary" onclick="goToNextStep(1)">
+                            <span>المتابعة لبيانات السيارة</span>
+                            <i data-feather="arrow-left"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- STEP 2: CAR DETAILS -->
+                <section class="step-pane" id="stepPane-2">
+                    <div class="pane-header">
+                        <h2>2. أدخل بيانات سيارتك</h2>
+                        <p>نستخدم هذه البيانات لتجهيز الفلاتر والمواد الأصلية المناسبة لمواصفات مصنع سيارتك.</p>
+                    </div>
+
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="carMakeSelect"><i data-feather="award"></i> ماركة السيارة</label>
+                                <select id="carMakeSelect" class="form-control" onchange="onMakeChange(this.value)">
+                                    <option value="">-- اختر ماركة السيارة --</option>
+                                    {% for make in car_makes %}
+                                    <option value="{{ make.name }}" data-id="{{ make.id }}">{{ make.name }}</option>
+                                    {% empty %}
+                                    <option value="تويوتا Toyota">تويوتا Toyota</option>
+                                    <option value="هيوانداي Hyundai">هيوانداي Hyundai</option>
+                                    <option value="كيا Kia">كيا Kia</option>
+                                    <option value="بي إم دبليو BMW">بي إم دبليو BMW</option>
+                                    <option value="مرسيدس Mercedes-Benz">مرسيدس Mercedes-Benz</option>
+                                    <option value="نيسان Nissan">نيسان Nissan</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="carModelSelect"><i data-feather="grid"></i> موديل السيارة</label>
+                                <select id="carModelSelect" class="form-control" onchange="updateJobCard()">
+                                    <option value="">-- اختر موديل السيارة --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="carYearSelect"><i data-feather="calendar"></i> سنة الصنع</label>
+                                <select id="carYearSelect" class="form-control" onchange="updateJobCard()">
+                                    <option value="2025">2025</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023" selected>2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2016">2016</option>
+                                    <option value="2015">2015 وأقدم</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="carPlateInput"><i data-feather="hash"></i> رقم اللوحة (اختياري)</label>
+                                <input type="text" id="carPlateInput" class="form-control" placeholder="مثال: أ ب ج 1234" oninput="updateJobCard()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button class="btn btn-secondary" onclick="navigateToStep(1)">
+                            <i data-feather="arrow-right"></i>
+                            <span>الرجوع</span>
+                        </button>
+                        <button class="btn btn-primary" onclick="goToNextStep(2)">
+                            <span>المتابعة لاختيار الموعد</span>
+                            <i data-feather="arrow-left"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- STEP 3: LOCATION & SLOTS -->
+                <section class="step-pane" id="stepPane-3">
+                    <div class="pane-header">
+                        <h2>3. اختر الفرع والموعد المناسب</h2>
+                        <p>تتاح المواعيد بناءً على الطاقة الاستيعابية الحقيقية لحارات الخدمة بالمركز.</p>
+                    </div>
+
+                    <div class="location-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="districtSelect"><i data-feather="map-pin"></i> منطقة الفرع</label>
+                                <select id="districtSelect" class="form-control" onchange="updateJobCard()">
+                                    <option value="October" selected>فرع مدينة 6 أكتوبر (المنطقة الصناعية)</option>
+                                    <option value="Zayed">فرع الشيخ زايد (وصلة دهشور)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="addressNotesInput"><i data-feather="navigation"></i> عنوانك أو ملاحظات الوصل</label>
+                                <input type="text" id="addressNotesInput" class="form-control" placeholder="مثال: بالقرب من المحور المركزي" oninput="updateJobCard()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="date-strip-wrapper">
+                        <div class="strip-label"><i data-feather="calendar"></i> اختر تاريخ اليوم:</div>
+                        <div class="date-strip" id="dateStrip">
+                            {% for dt in upcoming_dates %}
+                            <div class="date-chip {% if forloop.first %}selected{% endif %}" 
+                                 data-date="{{ dt|date:'Y-m-d' }}" 
+                                 onclick="selectDateChip(this)">
+                                <span class="day-name">
+                                    {% if forloop.first %}اليوم{% else %}{{ dt|date:'l' }}{% endif %}
+                                </span>
+                                <span class="date-num tabular">{{ dt|date:'d/m' }}</span>
+                            </div>
+                            {% empty %}
+                            <div class="date-chip selected" data-date="2026-08-23" onclick="selectDateChip(this)">
+                                <span class="day-name">اليوم</span>
+                                <span class="date-num tabular">23/08</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="slots-container">
+                        <div class="slot-group">
+                            <div class="group-header">
+                                <i data-feather="sun"></i>
+                                <span>فترة الصباح (09:00 ص - 12:00 ظ)</span>
+                            </div>
+                            <div class="slots-grid" id="morningSlots"></div>
+                        </div>
+
+                        <div class="slot-group">
+                            <div class="group-header">
+                                <i data-feather="cloud-sun"></i>
+                                <span>فترة الظهيرة (12:00 ظ - 04:00 ع)</span>
+                            </div>
+                            <div class="slots-grid" id="afternoonSlots"></div>
+                        </div>
+
+                        <div class="slot-group">
+                            <div class="group-header">
+                                <i data-feather="moon"></i>
+                                <span>فترة المساء (04:00 ع - 08:00 م)</span>
+                            </div>
+                            <div class="slots-grid" id="eveningSlots"></div>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button class="btn btn-secondary" onclick="navigateToStep(2)">
+                            <i data-feather="arrow-right"></i>
+                            <span>الرجوع</span>
+                        </button>
+                        <button class="btn btn-primary" onclick="goToNextStep(3)">
+                            <span>تأكيد البيانات النهائية</span>
+                            <i data-feather="arrow-left"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- STEP 4: CONFIRMATION -->
+                <section class="step-pane" id="stepPane-4">
+                    <div class="pane-header">
+                        <h2>4. بيانات التواصل وتأكيد الحجز للحساب المسجل</h2>
+                        <p>سيتم استخدام حسابك المفعل لإصدار كارت العمل وإرسال تأكيد الموعد بالواتساب والـ SMS.</p>
+                    </div>
+
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="custNameInput"><i data-feather="user"></i> الاسم بالكامل (حسابك المسجل)</label>
+                                <input type="text" id="custNameInput" class="form-control" placeholder="يرجى تسجيل الدخول أولاً" required oninput="updateJobCard()">
+                            </div>
+                            <div class="form-group">
+                                <label for="custPhoneInput"><i data-feather="phone"></i> رقم المحمول</label>
+                                <input type="tel" id="custPhoneInput" class="form-control" placeholder="010XXXXXXXX" required oninput="updateJobCard()">
+                            </div>
+                        </div>
+
+                        <div class="terms-box">
+                            <div class="terms-icon"><i data-feather="info"></i></div>
+                            <div class="terms-text">
+                                <strong>تنويه سيرفيس باي:</strong> يتم فحص السيارة فور وصولها وبحضور العميل، وتزويدك بتقرير فوتوغرافي وحراري شامل قبل بدء أية أعمال إضافية.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button class="btn btn-secondary" onclick="navigateToStep(3)">
+                            <i data-feather="arrow-right"></i>
+                            <span>الرجوع</span>
+                        </button>
+                        <button class="btn btn-go btn-large" onclick="submitBooking()">
+                            <i data-feather="check-circle"></i>
+                            <span>تأكيد الحجز وطباعة كارت العمل</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- TRUST STRIP -->
+                <section class="trust-strip">
+                    <div class="trust-item">
+                        <div class="trust-icon"><i data-feather="shield-check"></i></div>
+                        <div class="trust-body">
+                            <h4>ضمان معتمد 6 أشهر</h4>
+                            <p>على جميع قطع الغيار وأعمال الفنيين</p>
+                        </div>
+                    </div>
+                    <div class="trust-divider"></div>
+                    <div class="trust-item">
+                        <div class="trust-icon"><i data-feather="package"></i></div>
+                        <div class="trust-body">
+                            <h4>قطع غيار أصلية 100%</h4>
+                            <p>مستوردة مباشرة ومكفولة برقم السيريال</p>
+                        </div>
+                    </div>
+                    <div class="trust-divider"></div>
+                    <div class="trust-item">
+                        <div class="trust-icon"><i data-feather="camera"></i></div>
+                        <div class="trust-body">
+                            <h4>تقرير فوتوغرافي شامل</h4>
+                            <p>صور وفيديوهات لحالة العفشة والمحرك</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right Column: Pinned Live Garage Job Card -->
+            <div class="card-column">
+                <aside class="job-card" id="jobCardSidebar">
+                    <!-- Ticket Header -->
+                    <div class="job-card-header">
+                        <div class="job-ticket-badge">
+                            <span class="dot-live"></span>
+                            <span>أمر عمل مباشر</span>
+                        </div>
+                        <div class="job-ticket-id tabular" id="cardTicketId">SB-2026-8942</div>
+                    </div>
+
+                    <!-- Account Status Row in Job Card -->
+                    <div class="account-status-pill" id="cardAccountPill">
+                        <i data-feather="user"></i>
+                        <span id="cardAccountStatusText">الحساب: غير مسجل (يلزم الدخول)</span>
+                    </div>
+
+                    <!-- Steps Checklist status -->
+                    <div class="job-card-status">
+                        <div class="status-step-row" id="chkStep-1">
+                            <span class="chk-icon"><i data-feather="check"></i></span>
+                            <span class="chk-text">اختيار نوع الخدمة</span>
+                        </div>
+                        <div class="status-step-row" id="chkStep-2">
+                            <span class="chk-icon"><i data-feather="check"></i></span>
+                            <span class="chk-text">تحديد تفاصيل السيارة</span>
+                        </div>
+                        <div class="status-step-row" id="chkStep-3">
+                            <span class="chk-icon"><i data-feather="check"></i></span>
+                            <span class="chk-text">فرع وموعد الحضور</span>
+                        </div>
+                        <div class="status-step-row" id="chkStep-4">
+                            <span class="chk-icon"><i data-feather="check"></i></span>
+                            <span class="chk-text">حساب العميل والاعتماد</span>
+                        </div>
+                    </div>
+
+                    <hr class="card-divider">
+
+                    <!-- Selected Service Details -->
+                    <div class="job-card-section">
+                        <div class="sec-label">الخدمة المطلوبة:</div>
+                        <div class="sec-val service-name-val" id="cardServiceName">صيانة دورية 10.000 كم</div>
+                        <div class="sec-sub" id="cardServiceDuration"><i data-feather="clock"></i> المدة التقديرية: 60 دقيقة</div>
+                    </div>
+
+                    <!-- Vehicle Summary -->
+                    <div class="job-card-section">
+                        <div class="sec-label">بيانات المركبة:</div>
+                        <div class="sec-val" id="cardCarSummary">لم يتم التحديد بعد</div>
+                        <div class="sec-sub" id="cardCarPlate">---</div>
+                    </div>
+
+                    <!-- Time & Branch Summary -->
+                    <div class="job-card-section">
+                        <div class="sec-label">موقع وموعد الحجز:</div>
+                        <div class="sec-val" id="cardBranchSummary">فرع مدينة 6 أكتوبر</div>
+                        <div class="sec-sub" id="cardSlotSummary">اختر موعدك في الخطوة 3</div>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="job-card-section">
+                        <div class="sec-label">العميل صاحب الحساب:</div>
+                        <div class="sec-val" id="cardCustomerName">---</div>
+                        <div class="sec-sub" id="cardCustomerPhone">---</div>
+                    </div>
+
+                    <hr class="card-divider">
+
+                    <!-- Price Footer -->
+                    <div class="job-card-footer">
+                        <div class="total-label">إجمالي تكلفة أمر العمل:</div>
+                        <div class="amber-price-display">
+                            <span class="amber-currency">ج.م</span>
+                            <span class="amber-amount tabular" id="cardTotalPrice">1,450</span>
+                        </div>
+                        <div class="price-note">شامل ضريبة القيمة المضافة وقطع الغيار الأصيلة</div>
+                    </div>
+                </aside>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 3. AUTHENTICATION & ACCOUNT REGISTRATION MODAL -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-card login-modal-card">
+            <button class="modal-close-btn" onclick="closeLoginModal()"><i data-feather="x"></i></button>
+
+            <div class="login-toggle-tabs">
+                <button class="toggle-tab active" id="tabUserLogin" onclick="switchLoginTab('user')">
+                    <i data-feather="log-in"></i>
+                    <span>تسجيل الدخول</span>
+                </button>
+                <button class="toggle-tab" id="tabUserRegister" onclick="switchLoginTab('register')">
+                    <i data-feather="user-plus"></i>
+                    <span>إنشاء حساب جديد</span>
+                </button>
+                <button class="toggle-tab" id="tabAdminLogin" onclick="switchLoginTab('admin')">
+                    <i data-feather="shield"></i>
+                    <span>أدمن الورشة</span>
+                </button>
+            </div>
+
+            <!-- User Sign In Form -->
+            <form class="login-form active" id="formUserLogin" onsubmit="handleAuthSubmit(event, 'user')">
+                <h3 class="login-heading">تسجيل دخول لحسابك</h3>
+                <p class="login-subtext">أدخل اسمك أو رقم هاتفك لتسجيل الدخول ومتابعة حجزك</p>
+                <div class="form-group">
+                    <label for="loginUserInput"><i data-feather="user"></i> الاسم المسجل أو الهاتف</label>
+                    <input type="text" id="loginUserInput" class="form-control" placeholder="مثال: أحمد محمود / 01012345678" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginUserPasswordInput"><i data-feather="key"></i> كلمة السر</label>
+                    <input type="password" id="loginUserPasswordInput" class="form-control" placeholder="******" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i data-feather="log-in"></i>
+                    <span>دخول لحسابي ومتابعة الحجز</span>
+                </button>
+            </form>
+
+            <!-- User Account Registration Form -->
+            <form class="login-form" id="formUserRegister" onsubmit="handleAuthSubmit(event, 'register')">
+                <h3 class="login-heading">إنشاء حساب عميل جديد</h3>
+                <p class="login-subtext">أنشئ حسابك خلال لحظات لتتمكن من حجز الصيانة ومتابعة أمر العمل</p>
+                <div class="form-group">
+                    <label for="regNameInput"><i data-feather="user"></i> الاسم بالكامل</label>
+                    <input type="text" id="regNameInput" class="form-control" placeholder="مثال: محمد السيد" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPhoneInput"><i data-feather="phone"></i> رقم المحمول</label>
+                    <input type="tel" id="regPhoneInput" class="form-control" placeholder="010XXXXXXXX" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPasswordInput"><i data-feather="lock"></i> كلمة السر للحساب</label>
+                    <input type="password" id="regPasswordInput" class="form-control" placeholder="اختر كلمة سر قوية" required>
+                </div>
+                <button type="submit" class="btn btn-go btn-block">
+                    <i data-feather="check-circle"></i>
+                    <span>إنشاء الحساب ومتابعة الحجز</span>
+                </button>
+            </form>
+
+            <!-- Admin Login Form -->
+            <form class="login-form" id="formAdminLogin" onsubmit="handleAuthSubmit(event, 'admin')">
+                <h3 class="login-heading">تسجيل دخول مهندس الورشة (Admin)</h3>
+                <p class="login-subtext">الوصول الكامل إلى لوحة تحكم أوامر العمل (admin / admin123)</p>
+                <div class="form-group">
+                    <label for="adminUsernameInput"><i data-feather="user-check"></i> اسم المستخدم</label>
+                    <input type="text" id="adminUsernameInput" class="form-control" placeholder="admin" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPasswordInput"><i data-feather="key"></i> كلمة السر</label>
+                    <input type="password" id="adminPasswordInput" class="form-control" placeholder="admin123" required>
+                </div>
+                <button type="submit" class="btn btn-go btn-block">
+                    <i data-feather="shield-check"></i>
+                    <span>تسجيل الدخول كـ أدمن</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal Overlay -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal-card">
+            <div class="modal-icon-success">
+                <i data-feather="check-circle"></i>
+            </div>
+            <h2 class="modal-title">تم اعتماد أمر العمل بنجاح!</h2>
+            <p class="modal-desc">تم حفظ حجزك وتسجيل أمر العمل في حسابك بـ نظام سيرفيس باي. رقم كارت العمل الخاص بك هو:</p>
+            <div class="ticket-display-box tabular" id="modalTicketCode">SB-2026-8942</div>
+            
+            <div class="receipt-summary" id="modalReceiptDetails"></div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i data-feather="printer"></i>
+                    <span>طباعة كارت العمل</span>
+                </button>
+                <button class="btn btn-secondary" onclick="closeModal()">
+                    <span>إغلاق وتقديم حجز جديد</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {% csrf_token %}
+
+    <script src="{% static 'js/app.js' %}"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

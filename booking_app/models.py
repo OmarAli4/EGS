@@ -1,155 +1,113 @@
-"""موديلز نظام الحجز."""
 import random
 import string
 from django.db import models
 
+class Service(models.Model):
+    CATEGORY_CHOICES = (
+        ('maintenance', 'صيانة دورية'),
+        ('brakes', 'فرامل وسلامة'),
+        ('ac', 'تكييف وتبريد'),
+        ('scan', 'كشف كمبيوتر'),
+        ('engine', 'محرك وزيوت'),
+    )
+    title = models.CharField("عنوان الخدمة", max_length=150)
+    category = models.CharField("قسم الخدمة", max_length=50, choices=CATEGORY_CHOICES, default='maintenance')
+    description = models.TextField("وصف الخدمة")
+    price = models.DecimalField("السعر (ج.م)", max_digits=10, decimal_places=2)
+    duration_mins = models.IntegerField("المدة بالدقائق", default=45)
+    icon_type = models.CharField("أيقونة الخدمة", max_length=50, default="wrench")
+    is_popular = models.BooleanField("الأكثر طلباً / الأكثر مبيعاً", default=False)
+    included_features = models.TextField("المميزات المشمولة (مفصولة بفارزة)", help_text="مثال: فحص الزيوت, قياس ضغط الإطارات, تقرير فوتوغرافي")
 
-class CarMake(models.Model):
-    """ماركة العربية."""
-    name = models.CharField('الماركة', max_length=100)
-    icon_name = models.CharField('أيقونة', max_length=50, blank=True)
+    def __str__(self):
+        return f"[{self.get_category_display()}] {self.title} - {self.price} ج.م"
+
+    def features_list(self):
+        if not self.included_features:
+            return []
+        return [f.strip() for f in self.included_features.split(',') if f.strip()]
 
     class Meta:
-        verbose_name = 'ماركة'
-        verbose_name_plural = 'الماركات'
-        ordering = ['name']
+        verbose_name = "خدمة"
+        verbose_name_plural = "الخدمات"
+
+class CarMake(models.Model):
+    name = models.CharField("ماركة السيارة", max_length=100, unique=True)
+    icon_name = models.CharField("رمز الماركة", max_length=50, blank=True, default="car")
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "ماركة سيارة"
+        verbose_name_plural = "ماركات السيارات"
 
 class CarModel(models.Model):
-    """موديل العربية."""
-    name = models.CharField('الموديل', max_length=100)
-    make = models.ForeignKey(CarMake, on_delete=models.CASCADE,
-                             related_name='models', verbose_name='الماركة')
-
-    class Meta:
-        verbose_name = 'موديل'
-        verbose_name_plural = 'الموديلات'
-        ordering = ['name']
+    make = models.ForeignKey(CarMake, on_delete=models.CASCADE, related_name="models", verbose_name="الماركة")
+    name = models.CharField("موديل السيارة", max_length=100)
 
     def __str__(self):
-        return f'{self.make.name} {self.name}'
-
-
-class Service(models.Model):
-    """خدمة الصيانة."""
-    CATEGORY_CHOICES = [
-        ('maintenance', 'صيانة دورية'),
-        ('engine', 'المحرك والزيوت'),
-        ('brakes', 'الفرامل والسلامة'),
-        ('ac', 'التكييف والتبريد'),
-        ('scan', 'فحص وتشخيص'),
-        ('electric', 'كهرباء وبطارية'),
-        ('care', 'عناية ونظافة'),
-    ]
-
-    title = models.CharField('اسم الخدمة', max_length=150)
-    description = models.TextField('الوصف', blank=True)
-    price = models.DecimalField('السعر', max_digits=10, decimal_places=2)
-    duration_mins = models.IntegerField('المدة بالدقايق', default=45)
-    icon_type = models.CharField('نوع الأيقونة', max_length=50, default='wrench')
-    is_popular = models.BooleanField('الأكثر طلباً', default=False)
-    included_features = models.TextField(
-        'اللي شامله', blank=True,
-        help_text='افصل كل بند بسطر جديد')
-    category = models.CharField('التصنيف', max_length=50,
-                                choices=CATEGORY_CHOICES, default='maintenance')
+        return f"{self.make.name} {self.name}"
 
     class Meta:
-        verbose_name = 'خدمة'
-        verbose_name_plural = 'الخدمات'
-        ordering = ['-is_popular', 'id']
-
-    def __str__(self):
-        return self.title
-
-    @property
-    def features_list(self):
-        return [f.strip() for f in self.included_features.splitlines() if f.strip()]
-
+        verbose_name = "موديل سيارة"
+        verbose_name_plural = "موديلات السيارات"
 
 class TimeSlot(models.Model):
-    """ميعاد متاح."""
-    PERIOD_CHOICES = [
-        ('morning', 'صباحاً'),
-        ('afternoon', 'بعد الضهر'),
-        ('evening', 'بالليل'),
-    ]
-
-    date = models.DateField('التاريخ')
-    time_label = models.CharField('الميعاد', max_length=50)
-    period = models.CharField('الفترة', max_length=20, choices=PERIOD_CHOICES)
-    is_available = models.BooleanField('متاح', default=True)
-
-    class Meta:
-        verbose_name = 'ميعاد'
-        verbose_name_plural = 'المواعيد'
-        ordering = ['date', 'id']
+    PERIOD_CHOICES = (
+        ('morning', 'صباحاً (09:00 - 12:00)'),
+        ('afternoon', 'ظهراً (12:00 - 04:00)'),
+        ('evening', 'مساءً (04:00 - 08:00)'),
+    )
+    date = models.DateField("التاريخ")
+    time_label = models.CharField("الوقت", max_length=50)
+    period = models.CharField("الفترة", max_length=20, choices=PERIOD_CHOICES, default='morning')
+    is_available = models.BooleanField("متاح", default=True)
 
     def __str__(self):
-        return f'{self.date} — {self.time_label}'
+        return f"{self.date} - {self.time_label} ({self.get_period_display()})"
 
+    class Meta:
+        verbose_name = "موعد صيانة"
+        verbose_name_plural = "مواعيد الصيانة"
+
+def generate_ticket_code():
+    chars = ''.join(random.choices(string.digits, k=4))
+    return f"SB-2026-{chars}"
 
 class Booking(models.Model):
-    """حجز العميل."""
-    STATUS_CHOICES = [
-        ('pending', 'في انتظار التأكيد'),
+    DISTRICT_CHOICES = (
+        ('October', 'مدينة 6 أكتوبر'),
+        ('Zayed', 'الشيخ زايد'),
+    )
+    STATUS_CHOICES = (
         ('confirmed', 'مؤكد'),
-        ('done', 'تم'),
-        ('cancelled', 'ملغي'),
-    ]
-    DISTRICT_CHOICES = [
-        ('zayed_3', 'الشيخ زايد — الحي الثالث'),
-        ('zayed_16', 'الشيخ زايد — الحي السادس عشر'),
-        ('beverly', 'بيفرلي هيلز'),
-        ('arkan', 'أركان'),
-        ('zayed_2000', 'زايد 2000'),
-        ('dreamland', 'دريم لاند'),
-        ('gardenia', 'جاردينيا هايتس'),
-        ('oct_1', 'أكتوبر — الحي الأول'),
-        ('oct_7', 'أكتوبر — الحي السابع'),
-        ('oct_12', 'أكتوبر — الحي الثاني عشر'),
-        ('palm', 'بالم هيلز أكتوبر'),
-        ('othman', 'مساكن عثمان'),
-        ('hadayek', 'حدائق أكتوبر'),
-    ]
-
-    ticket_code = models.CharField('رقم الحجز', max_length=30, unique=True, blank=True)
-    customer_name = models.CharField('اسم العميل', max_length=150)
-    customer_phone = models.CharField('الموبايل', max_length=20)
-    district = models.CharField('المنطقة', max_length=50, choices=DISTRICT_CHOICES)
-    address_notes = models.TextField('تفاصيل العنوان')
-    car_make = models.CharField('الماركة', max_length=100)
-    car_model = models.CharField('الموديل', max_length=100)
-    car_year = models.IntegerField('سنة الصنع', null=True, blank=True)
-    plate_number = models.CharField('رقم اللوحة', max_length=50, blank=True)
-    booking_date = models.DateField('تاريخ الزيارة')
-    booking_time = models.CharField('ميعاد الزيارة', max_length=50)
-    total_price = models.DecimalField('الإجمالي', max_digits=10, decimal_places=2)
-    status = models.CharField('الحالة', max_length=20,
-                              choices=STATUS_CHOICES, default='pending')
-    created_at = models.DateTimeField('اتعمل في', auto_now_add=True)
-    service = models.ForeignKey(Service, on_delete=models.PROTECT,
-                                related_name='bookings', verbose_name='الخدمة')
-
-    class Meta:
-        verbose_name = 'حجز'
-        verbose_name_plural = 'الحجوزات'
-        ordering = ['-created_at']
+        ('in_progress', 'قيد الصيانة'),
+        ('completed', 'مكتمل'),
+        ('cancelled', 'ملغى'),
+    )
+    ticket_code = models.CharField("رقم أمر العمل", max_length=30, default=generate_ticket_code, unique=True)
+    customer_name = models.CharField("اسم العميل", max_length=150)
+    customer_phone = models.CharField("رقم الهاتف", max_length=20)
+    district = models.CharField("المنطقة", max_length=50, choices=DISTRICT_CHOICES, default='October')
+    address_notes = models.TextField("ملاحظات العنوان / الموقع", blank=True)
+    
+    car_make = models.CharField("ماركة السيارة", max_length=100)
+    car_model = models.CharField("موديل السيارة", max_length=100)
+    car_year = models.IntegerField("سنة الصنع")
+    plate_number = models.CharField("رقم اللوحة", max_length=50, blank=True)
+    
+    service = models.ForeignKey(Service, on_delete=models.PROTECT, verbose_name="الخدمة المختارة")
+    booking_date = models.DateField("تاريخ الحجز")
+    booking_time = models.CharField("وقت الحجز", max_length=50)
+    
+    total_price = models.DecimalField("الإجمالي (ج.م)", max_digits=10, decimal_places=2)
+    status = models.CharField("حالة أمر العمل", max_length=20, choices=STATUS_CHOICES, default='confirmed')
+    created_at = models.DateTimeField("تاريخ الإنشاء", auto_now_add=True)
 
     def __str__(self):
-        return f'{self.ticket_code} — {self.customer_name}'
+        return f"{self.ticket_code} - {self.customer_name} ({self.service.title})"
 
-    def save(self, *args, **kwargs):
-        if not self.ticket_code:
-            self.ticket_code = self._new_code()
-        super().save(*args, **kwargs)
-
-    @staticmethod
-    def _new_code():
-        while True:
-            code = 'SB-' + ''.join(random.choices(string.digits, k=5))
-            if not Booking.objects.filter(ticket_code=code).exists():
-                return code
+    class Meta:
+        verbose_name = "حجز صيانة"
+        verbose_name_plural = "حجوزات الصيانة"

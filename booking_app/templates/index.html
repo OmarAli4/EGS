@@ -330,20 +330,20 @@
 
                     <!-- Call To Action Actions -->
                     <div class="hero-actions-bar">
-                        <a href="#bookingContainer" class="hero-cta-btn" onclick="document.getElementById('bookingContainer').scrollIntoView({behavior: 'smooth'})">
+                        <button type="button" class="hero-cta-btn" onclick="scrollToBooking(event)">
                             <i data-feather="calendar"></i>
                             <span>احجز صيانة سيارتك الآن</span>
-                        </a>
+                        </button>
 
                         <a href="tel:19900" class="hero-hotline-btn">
                             <i data-feather="phone-call"></i>
                             <span>19900 (الخط الساخن)</span>
                         </a>
 
-                        <div class="hero-promo-badge">
+                        <button type="button" class="hero-promo-badge" onclick="copyPromoCode('EGS15', this)" title="اضغط لنسخ كود الخصم">
                             <i data-feather="tag"></i>
                             <span>كود خصم 15%: <strong>EGS15</strong></span>
-                        </div>
+                        </button>
                     </div>
                 </div>
 
@@ -433,18 +433,6 @@
 
             <!-- Main Booking Stepper Column -->
             <div class="booking-column">
-                
-                <!-- Clean Hero Banner -->
-                <section class="hero-section">
-                    <div class="hero-content">
-                        <div class="hero-pill">
-                            <i data-feather="truck"></i>
-                            <span>ورشة صيانة متنقلة ومجهزة بالكامل تصلك لباب بيتك</span>
-                        </div>
-                        <h1 class="hero-title">صيانة سيارتك بتجيلك لحد باب بيتك أو مكان شغلك 🚚</h1>
-                        <p class="hero-subtitle">اختر نوع الصيانة، حدد موقع تواجد السيارة، وستصلك عربة الصيانة المتنقلة المجهزة بأحدث أجهزة الفحص وشفط الزيوت الآمنة بدون فوضى أو إضاعة لوقتك.</p>
-                    </div>
-                </section>
 
                 <!-- MANDATORY ACCOUNT NOTICE -->
                 <div class="account-notice-banner" id="authNoticeBanner">

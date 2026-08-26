@@ -101,17 +101,53 @@ function initContinuousCarousel() {
 
         // Reset loop when reaching end
         const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
-        if (Math.abs(wrapper.scrollLeft) >= maxScroll - 2 || wrapper.scrollLeft === 0) {
+        if (Math.abs(wrapper.scrollLeft) >= maxScroll - 2) {
             wrapper.scrollLeft = 0;
         }
-    }, 25);
+    }, 28);
+}
+
+function scrollToBooking(event) {
+    if (event) event.preventDefault();
+    const target = document.querySelector('.stepper-bar') || document.getElementById('stepPane-1') || document.querySelector('.booking-column');
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function copyPromoCode(code, btnElem) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(() => {
+            if (btnElem) {
+                const originalHTML = btnElem.innerHTML;
+                btnElem.innerHTML = `<i data-feather="check"></i> <span>تم نسخ كود الخصم (${code}) ✓</span>`;
+                btnElem.style.borderColor = '#10B981';
+                btnElem.style.color = '#34D399';
+                if (typeof feather !== 'undefined') feather.replace();
+                setTimeout(() => {
+                    btnElem.innerHTML = originalHTML;
+                    btnElem.style.borderColor = '#F59E0B';
+                    btnElem.style.color = '#FEF08A';
+                    if (typeof feather !== 'undefined') feather.replace();
+                }, 2500);
+            }
+        }).catch(() => {
+            alert(`كود الخصم هو: ${code}`);
+        });
+    } else {
+        alert(`كود الخصم هو: ${code}`);
+    }
 }
 
 function quickSelectService(serviceId) {
     const card = document.querySelector(`.service-card[data-id="${serviceId}"]`);
     if (card) {
         selectService(card);
-        navigateToStep(1);
+    }
+    navigateToStep(1);
+    const step1 = document.getElementById('stepPane-1');
+    if (step1) {
+        step1.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 

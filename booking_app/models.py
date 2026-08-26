@@ -79,12 +79,18 @@ class Booking(models.Model):
     DISTRICT_CHOICES = (
         ('October', 'مدينة 6 أكتوبر'),
         ('Zayed', 'الشيخ زايد'),
+        ('Haram_Gardens', 'حدائق الأهرام'),
+        ('October_Gardens', 'حدائق أكتوبر'),
+        ('New_Cairo', 'التجمع والقاهرة الجديدة'),
+        ('Maadi', 'المعادي'),
+        ('Other', 'منطقة أخرى'),
     )
     STATUS_CHOICES = (
-        ('confirmed', 'مؤكد'),
-        ('in_progress', 'قيد الصيانة'),
-        ('completed', 'مكتمل'),
-        ('cancelled', 'ملغى'),
+        ('confirmed', 'تم تأكيد الحجز 🟢'),
+        ('on_the_way', 'سيارة الصيانة في الطريق 🚚'),
+        ('in_progress', 'جاري الصيانة بموقعك ⚙️'),
+        ('completed', 'اكتملت الصيانة بنجاح ✅'),
+        ('cancelled', 'تم الإلغاء ❌'),
     )
     ticket_code = models.CharField("رقم أمر العمل", max_length=30, default=generate_ticket_code, unique=True)
     customer_name = models.CharField("اسم العميل", max_length=150)

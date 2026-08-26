@@ -1,0 +1,363 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+<div class="dashboard-main" style="padding: 0; margin-top: 10px;">
+    
+    <!-- TOP BAR -->
+    <header class="dashboard-topbar">
+        <div class="topbar-title-block">
+            <h1 class="page-main-title">Dealer Dashboard</h1>
+        </div>
+
+        <div class="topbar-actions-block">
+            <!-- Search Input with Keyboard Shortcut -->
+            <div class="search-input-pill">
+                <i data-feather="search"></i>
+                <input type="text" id="globalSearchInput" placeholder="Search" oninput="filterDashboardTable()">
+                <span class="kbd-shortcut">⌘K</span>
+            </div>
+
+            <!-- Time Range Dropdown -->
+            <div class="dropdown-select-pill">
+                <select id="timeframeSelect" onchange="updateDashboardPeriod(this.value)">
+                    <option value="last_month" selected>Last Month</option>
+                    <option value="this_week">This Week</option>
+                    <option value="today">Today</option>
+                    <option value="all_time">All Time</option>
+                </select>
+                <i data-feather="chevron-down"></i>
+            </div>
+
+            <!-- Add New Booking CTA -->
+            <a href="{% url 'admin:booking_app_booking_add' %}" class="btn-cta-green">
+                <i data-feather="plus"></i>
+                <span>+ Add New Vehicles</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- TOP 4 METRICS KPI CARDS -->
+    <section class="kpi-cards-grid">
+        <!-- Card 1: Blue -->
+        <div class="kpi-card">
+            <div class="kpi-icon-box icon-blue">
+                <i data-feather="truck"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Vehicles in Stock</span>
+                <div class="kpi-value-row">
+                    <span class="kpi-number tabular">{{ total_count|default:"150" }}</span>
+                    <span class="kpi-unit">units</span>
+                    <span class="kpi-badge badge-up">↑ 8%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Green -->
+        <div class="kpi-card">
+            <div class="kpi-icon-box icon-green">
+                <i data-feather="check-square"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Vehicles Sold</span>
+                <div class="kpi-value-row">
+                    <span class="kpi-number tabular">{{ completed_count|default:"20" }}</span>
+                    <span class="kpi-unit">units</span>
+                    <span class="kpi-badge badge-down">↓ 8%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Cyan -->
+        <div class="kpi-card">
+            <div class="kpi-icon-box icon-cyan">
+                <i data-feather="tag"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Active Offers</span>
+                <div class="kpi-value-row">
+                    <span class="kpi-number tabular">{{ active_count|default:"3" }}</span>
+                    <span class="kpi-unit">offers</span>
+                    <span class="kpi-badge badge-up">↑ 8%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Amber -->
+        <div class="kpi-card">
+            <div class="kpi-icon-box icon-amber">
+                <i data-feather="clock"></i>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Pending Inquiries</span>
+                <div class="kpi-value-row">
+                    <span class="kpi-number tabular">{{ pending_count|default:"5" }}</span>
+                    <span class="kpi-unit">inquiries</span>
+                    <span class="kpi-badge badge-down">↓ 8%</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MIDDLE SECTION (CHART & SALES OFFER) -->
+    <section class="middle-grid">
+        
+        <!-- Left: Sales Performance Line Chart (65%) -->
+        <div class="content-card sales-performance-card">
+            <div class="card-header-row">
+                <h2 class="card-title">Sales Performance</h2>
+                <div class="chart-legend-row">
+                    <span class="legend-item"><span class="legend-dot dot-actual"></span> Actual Sales</span>
+                    <span class="legend-item"><span class="legend-dot dot-target"></span> Sales Target</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="salesPerformanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Right: Sales Offer List (35%) -->
+        <div class="content-card sales-offer-card">
+            <div class="card-header-row">
+                <h2 class="card-title">Sales Offer</h2>
+                <a href="{% url 'admin:booking_app_booking_changelist' %}" class="card-link-see-all">See all</a>
+            </div>
+            <div class="sales-offer-list">
+                
+                {% for b in recent_bookings|slice:":4" %}
+                <div class="offer-list-item">
+                    <div class="offer-avatar">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Avatar">
+                    </div>
+                    <div class="offer-meta">
+                        <a href="{% url 'admin:booking_app_booking_change' b.id %}" style="text-decoration:none;">
+                            <div class="offer-code-tag tabular">{{ b.ticket_code }}</div>
+                        </a>
+                        <div class="offer-sub">{{ b.customer_name }} → 5% off</div>
+                        <div class="offer-date tabular">{{ b.booking_date|date:"jS M" }} - {{ b.booking_time }}</div>
+                    </div>
+                    <div class="offer-badge-col">
+                        {% if b.status == 'completed' %}
+                            <span class="status-pill-subtle status-check">Check</span>
+                        {% elif b.status == 'cancelled' %}
+                            <span class="status-pill-subtle status-cancelled">Cancelled</span>
+                        {% elif b.status == 'in_progress' or b.status == 'on_the_way' %}
+                            <span class="status-pill-subtle status-signed">Signed</span>
+                        {% else %}
+                            <span class="status-pill-subtle status-offer-sent">Offer sent</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="offer-list-item">
+                    <div class="offer-avatar"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Avatar"></div>
+                    <div class="offer-meta">
+                        <div class="offer-code-tag tabular">KA00001-001</div>
+                        <div class="offer-sub">John Doe → 5% off</div>
+                        <div class="offer-date tabular">15th July - 15th Aug 2025</div>
+                    </div>
+                    <div class="offer-badge-col"><span class="status-pill-subtle status-check">Check</span></div>
+                </div>
+                <div class="offer-list-item">
+                    <div class="offer-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="Avatar"></div>
+                    <div class="offer-meta">
+                        <div class="offer-code-tag tabular">KA00001-001</div>
+                        <div class="offer-sub">John Doe → 5% off</div>
+                        <div class="offer-date tabular">15th July - 15th Aug 2025</div>
+                    </div>
+                    <div class="offer-badge-col"><span class="status-pill-subtle status-cancelled">Cancelled</span></div>
+                </div>
+                <div class="offer-list-item">
+                    <div class="offer-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&auto=format&fit=crop&q=80" alt="Avatar"></div>
+                    <div class="offer-meta">
+                        <div class="offer-code-tag tabular">KA00001-001</div>
+                        <div class="offer-sub">John Doe → 5% off</div>
+                        <div class="offer-date tabular">15th July - 15th Aug 2025</div>
+                    </div>
+                    <div class="offer-badge-col"><span class="status-pill-subtle status-signed">Signed</span></div>
+                </div>
+                <div class="offer-list-item">
+                    <div class="offer-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80" alt="Avatar"></div>
+                    <div class="offer-meta">
+                        <div class="offer-code-tag tabular">KA00001-001</div>
+                        <div class="offer-sub">John Doe → 5% off</div>
+                        <div class="offer-date tabular">15th July - 15th Aug 2025</div>
+                    </div>
+                    <div class="offer-badge-col"><span class="status-pill-subtle status-offer-sent">Offer sent</span></div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+    <!-- BOTTOM SECTION (BRAND & VEHICLE STOCK) -->
+    <section class="bottom-grid" id="vehiclesTableSection">
+        
+        <!-- Left: Brand / Marques Grid (40%) -->
+        <div class="content-card brand-fleet-card">
+            <div class="card-header-row">
+                <h2 class="card-title">Brand</h2>
+                <a href="{% url 'admin:booking_app_carmake_changelist' %}" class="card-link-see-all">See all</a>
+            </div>
+            
+            <!-- Filter Pill Segment -->
+            <div class="brand-filter-segment">
+                <button class="segment-tab active" onclick="setBrandFilter('active', this)">Active (4)</button>
+                <button class="segment-tab" onclick="setBrandFilter('inactive', this)">Inactive (2)</button>
+            </div>
+
+            <!-- Brand Cards 2-Col Grid -->
+            <div class="brand-cards-grid">
+                <div class="brand-tile">
+                    <div class="brand-logo-round brand-fiat">FIAT</div>
+                    <div class="brand-title-name">Fiat Professional</div>
+                    <div class="brand-units-count tabular">24 units</div>
+                </div>
+                <div class="brand-tile">
+                    <div class="brand-logo-round brand-honda">H</div>
+                    <div class="brand-title-name">Honda</div>
+                    <div class="brand-units-count tabular">12 units</div>
+                </div>
+                <div class="brand-tile">
+                    <div class="brand-logo-round brand-mercedes">MB</div>
+                    <div class="brand-title-name">Mercedes-Benz</div>
+                    <div class="brand-units-count tabular">38 units</div>
+                </div>
+                <div class="brand-tile">
+                    <div class="brand-logo-round brand-porsche">P</div>
+                    <div class="brand-title-name">Porsche</div>
+                    <div class="brand-units-count tabular">16 units</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Vehicle Stock Table (60%) -->
+        <div class="content-card vehicle-stock-card">
+            <div class="card-header-row">
+                <h2 class="card-title">Vehicle Stock</h2>
+                <div class="card-actions-group">
+                    <a href="{% url 'admin:booking_app_booking_changelist' %}" class="btn-outline-pill"><i data-feather="filter"></i> Filter</a>
+                    <a href="{% url 'admin:booking_app_booking_changelist' %}" class="btn-outline-pill">See all</a>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="stock-table" id="dashboardStockTable">
+                    <thead>
+                        <tr>
+                            <th>BRAND</th>
+                            <th>VIN / TICKET</th>
+                            <th>STATUS</th>
+                            <th>LOCATION</th>
+                            <th>PRICE</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in recent_bookings %}
+                        <tr>
+                            <td>
+                                <div class="table-brand-cell">
+                                    <div class="table-brand-icon">{{ b.car_make|slice:":2"|upper }}</div>
+                                    <span class="table-model-name">{{ b.car_make }} {{ b.car_model }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="vin-tag tabular">{{ b.ticket_code }}</span>
+                            </td>
+                            <td>
+                                {% if b.status == 'completed' %}
+                                    <span class="stock-status-pill status-sold"><span class="dot-sold"></span> Sold</span>
+                                {% elif b.status == 'on_the_way' or b.status == 'in_progress' %}
+                                    <span class="stock-status-pill status-instock"><span class="dot-instock"></span> In Stock</span>
+                                {% else %}
+                                    <span class="stock-status-pill status-pending"><span class="dot-pending"></span> Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="location-name">{{ b.get_district_display|default:"Showroom A" }}</span>
+                            </td>
+                            <td>
+                                <strong class="price-val tabular">€ {{ b.total_price }}</strong>
+                            </td>
+                            <td>
+                                <a href="{% url 'admin:booking_app_booking_change' b.id %}" class="btn-action-dots" title="Edit in Admin">•••</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td><div class="table-brand-cell"><div class="table-brand-icon">FIAT</div><span class="table-model-name">Model X</span></div></td>
+                            <td><span class="vin-tag tabular">123456</span></td>
+                            <td><span class="stock-status-pill status-instock"><span class="dot-instock"></span> In Stock</span></td>
+                            <td><span class="location-name">Showroom A</span></td>
+                            <td><strong class="price-val tabular">€ 45,000</strong></td>
+                            <td><button class="btn-action-dots">•••</button></td>
+                        </tr>
+                        <tr>
+                            <td><div class="table-brand-cell"><div class="table-brand-icon">H</div><span class="table-model-name">Model X</span></div></td>
+                            <td><span class="vin-tag tabular">123456</span></td>
+                            <td><span class="stock-status-pill status-sold"><span class="dot-sold"></span> Sold</span></td>
+                            <td><span class="location-name">Showroom A</span></td>
+                            <td><strong class="price-val tabular">€ 45,000</strong></td>
+                            <td><button class="btn-action-dots">•••</button></td>
+                        </tr>
+                        <tr>
+                            <td><div class="table-brand-cell"><div class="table-brand-icon">MB</div><span class="table-model-name">Model X</span></div></td>
+                            <td><span class="vin-tag tabular">123456</span></td>
+                            <td><span class="stock-status-pill status-pending"><span class="dot-pending"></span> Pending</span></td>
+                            <td><span class="location-name">Showroom A</span></td>
+                            <td><strong class="price-val tabular">€ 45,000</strong></td>
+                            <td><button class="btn-action-dots">•••</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- NATIVE DJANGO ADMIN MODEL SHORTCUTS -->
+    <div style="margin-top: 32px; background:#FFFFFF; border:1px solid #EEF2F6; border-radius:16px; padding:20px 24px;">
+        <h3 style="font-size:14px; font-weight:800; color:#0F172A; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+            <i data-feather="database" style="width:16px; height:16px; color:#10B981;"></i>
+            <span>إدارة الجداول والنماذج المركزية (Django Database Models)</span>
+        </h3>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:12px;">
+            <a href="{% url 'admin:booking_app_booking_changelist' %}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#F8FAFC; border:1px solid #EEF2F6; border-radius:10px; text-decoration:none; color:#0F172A; font-weight:700; font-size:13px;">
+                <span>📋 أوامر العمل والحجوزات</span>
+                <i data-feather="arrow-left" style="width:14px; height:14px; color:#64748B;"></i>
+            </a>
+            <a href="{% url 'admin:booking_app_service_changelist' %}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#F8FAFC; border:1px solid #EEF2F6; border-radius:10px; text-decoration:none; color:#0F172A; font-weight:700; font-size:13px;">
+                <span>💰 باقات وأسعار الصيانة</span>
+                <i data-feather="arrow-left" style="width:14px; height:14px; color:#64748B;"></i>
+            </a>
+            <a href="{% url 'admin:booking_app_carmake_changelist' %}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#F8FAFC; border:1px solid #EEF2F6; border-radius:10px; text-decoration:none; color:#0F172A; font-weight:700; font-size:13px;">
+                <span>🚘 ماركات وموديلات السيارات</span>
+                <i data-feather="arrow-left" style="width:14px; height:14px; color:#64748B;"></i>
+            </a>
+            <a href="{% url 'admin:booking_app_timeslot_changelist' %}" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#F8FAFC; border:1px solid #EEF2F6; border-radius:10px; text-decoration:none; color:#0F172A; font-weight:700; font-size:13px;">
+                <span>⏰ المواعيد والفترات المتاحة</span>
+                <i data-feather="arrow-left" style="width:14px; height:14px; color:#64748B;"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Dashboard Scripts -->
+<script src="{% static 'js/dashboard.js' %}"></script>
+<script>
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+</script>
+{% endblock %}

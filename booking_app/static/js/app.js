@@ -55,34 +55,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Initial Job Card Update
     updateJobCard();
+
+    // 8. Restore Persisted User/Admin Login Session
+    restorePersistedAuthSession();
 });
 
 /**
- * 1. SPLASH LOADER ENGINE
+ * 1. LIGHTWEIGHT INSTANT LOADER
  */
 function runSplashLoader() {
     const splashBar = document.getElementById('splashBar');
     const splashPercent = document.getElementById('splashPercent');
     const splashLoader = document.getElementById('splashLoader');
+    if (!splashLoader) return;
 
-    let count = 0;
-    const interval = setInterval(() => {
-        count += 5;
-        if (count > 100) count = 100;
-        
-        if (splashBar) splashBar.style.width = count + '%';
-        if (splashPercent) splashPercent.textContent = count + '%';
+    if (splashBar) splashBar.style.width = '100%';
+    if (splashPercent) splashPercent.textContent = '100%';
 
-        if (count >= 100) {
-            clearInterval(interval);
-            if (splashLoader) {
-                splashLoader.classList.add('fade-out');
-                setTimeout(() => {
-                    splashLoader.style.display = 'none';
-                }, 400);
-            }
-        }
-    }, 30);
+    setTimeout(() => {
+        splashLoader.classList.add('fade-out');
+        setTimeout(() => {
+            splashLoader.style.display = 'none';
+        }, 200);
+    }, 150);
 }
 
 /**
@@ -154,24 +149,19 @@ function closeLoginModal() {
 function switchLoginTab(role) {
     const tabUser = document.getElementById('tabUserLogin');
     const tabReg = document.getElementById('tabUserRegister');
-    const tabAdmin = document.getElementById('tabAdminLogin');
 
     const formUser = document.getElementById('formUserLogin');
     const formReg = document.getElementById('formUserRegister');
-    const formAdmin = document.getElementById('formAdminLogin');
 
-    [tabUser, tabReg, tabAdmin].forEach(t => t && t.classList.remove('active'));
-    [formUser, formReg, formAdmin].forEach(f => f && f.classList.remove('active'));
+    [tabUser, tabReg].forEach(t => t && t.classList.remove('active'));
+    [formUser, formReg].forEach(f => f && f.classList.remove('active'));
 
-    if (role === 'user') {
-        if (tabUser) tabUser.classList.add('active');
-        if (formUser) formUser.classList.add('active');
-    } else if (role === 'register') {
+    if (role === 'register') {
         if (tabReg) tabReg.classList.add('active');
         if (formReg) formReg.classList.add('active');
     } else {
-        if (tabAdmin) tabAdmin.classList.add('active');
-        if (formAdmin) formAdmin.classList.add('active');
+        if (tabUser) tabUser.classList.add('active');
+        if (formUser) formUser.classList.add('active');
     }
 }
 
@@ -201,56 +191,38 @@ function handleAuthSubmit(event, actionType) {
         .catch(() => completeAuthSession('user', name, phone));
     } else if (actionType === 'user') {
         const userInput = document.getElementById('loginUserInput').value.trim();
+        const passwordInput = document.getElementById('loginUserPasswordInput').value.trim();
+
         fetch('/api/login/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
-            body: JSON.stringify({ role: 'user', username: userInput })
+            body: JSON.stringify({ username: userInput, password: passwordInput })
         })
         .then(res => res.json())
         .then(data => {
             if (data.status === 'success') {
                 completeAuthSession('user', data.name, data.phone);
             } else {
-                alert(data.message || 'فشل تسجيل الدخول');
+                alert(data.message || 'فشل تسجيل الدخول، يرجى مراجعة البيانات المدخلة');
             }
         })
         .catch(() => completeAuthSession('user', userInput, '01000000000'));
-    } else if (actionType === 'admin') {
-        const username = document.getElementById('adminUsernameInput').value.trim();
-        const password = document.getElementById('adminPasswordInput').value.trim();
-
-        fetch('/api/login/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
-            body: JSON.stringify({ role: 'admin', username, password })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                closeLoginModal();
-                currentAuthRole = 'admin';
-                loggedInUser = data.name;
-                updateHeaderAuthUI();
-                showAdminViewPane();
-            } else {
-                alert(data.message || 'بيانات الأدمن غير صحيحة');
-            }
-        })
-        .catch(() => {
-            closeLoginModal();
-            currentAuthRole = 'admin';
-            loggedInUser = 'مهندس الورشة (Admin)';
-            updateHeaderAuthUI();
-            showAdminViewPane();
-        });
     }
 }
 
 function completeAuthSession(role, name, phone) {
     closeLoginModal();
-    currentAuthRole = role;
+    currentAuthRole = 'user';
     loggedInUser = name;
     userPhone = phone || '010XXXXXXXX';
+
+    try {
+        localStorage.setItem('egs_auth_session', JSON.stringify({
+            role: 'user',
+            name: name,
+            phone: userPhone
+        }));
+    } catch (e) {}
 
     const custNameInput = document.getElementById('custNameInput');
     const custPhoneInput = document.getElementById('custPhoneInput');
@@ -268,6 +240,35 @@ function completeAuthSession(role, name, phone) {
     updateJobCard();
 }
 
+function restorePersistedAuthSession() {
+    try {
+        const saved = localStorage.getItem('egs_auth_session');
+        if (!saved) return;
+
+        const session = JSON.parse(saved);
+        if (!session || !session.name) return;
+
+        currentAuthRole = 'user';
+        loggedInUser = session.name;
+        userPhone = session.phone || '010XXXXXXXX';
+
+        const custNameInput = document.getElementById('custNameInput');
+        const custPhoneInput = document.getElementById('custPhoneInput');
+        if (custNameInput && session.name) custNameInput.value = session.name;
+        if (custPhoneInput && session.phone) custPhoneInput.value = session.phone;
+
+        bookingData.customerName = session.name;
+        bookingData.customerPhone = session.phone;
+
+        const noticeBanner = document.getElementById('authNoticeBanner');
+        if (noticeBanner) noticeBanner.style.display = 'none';
+
+        updateHeaderAuthUI();
+    } catch (e) {
+        console.error('Failed to restore session:', e);
+    }
+}
+
 function updateHeaderAuthUI() {
     const authBtnGroup = document.getElementById('authBtnGroup');
     if (!authBtnGroup) return;
@@ -277,13 +278,6 @@ function updateHeaderAuthUI() {
             <button class="user-logged-in-btn" onclick="logoutAccount()">
                 <i data-feather="user-check"></i>
                 <span>حسابك: ${loggedInUser} (خروج)</span>
-            </button>
-        `;
-    } else if (currentAuthRole === 'admin') {
-        authBtnGroup.innerHTML = `
-            <button class="user-logged-in-btn" style="background:#FFF3E0; color:#E65100; border-color:#E65100;" onclick="logoutAccount()">
-                <i data-feather="shield"></i>
-                <span>لوحة الأدمن (خروج)</span>
             </button>
         `;
     } else {
@@ -298,6 +292,10 @@ function updateHeaderAuthUI() {
 }
 
 function logoutAccount() {
+    try {
+        localStorage.removeItem('egs_auth_session');
+    } catch (e) {}
+
     currentAuthRole = 'guest';
     loggedInUser = null;
     userPhone = null;
@@ -310,116 +308,16 @@ function logoutAccount() {
     updateJobCard();
 }
 
-function showAdminViewPane() {
-    const mainPortal = document.getElementById('mainPortalLayout');
-    const adminPane = document.getElementById('adminViewPane');
-
-    if (mainPortal) mainPortal.style.display = 'none';
-    if (adminPane) adminPane.classList.add('active');
-
-    loadAdminBookings();
-}
-
 function showMainPortal() {
     const mainPortal = document.getElementById('mainPortalLayout');
-    const adminPane = document.getElementById('adminViewPane');
-
-    if (adminPane) adminPane.classList.remove('active');
     if (mainPortal) mainPortal.style.display = 'block';
 }
 
-function loadAdminBookings() {
-    fetch('/api/admin/bookings/')
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                renderAdminDashboard(data);
-            }
-        })
-        .catch(() => {
-            renderAdminDashboard({
-                total_count: 3,
-                total_revenue: 5280.00,
-                bookings: [
-                    {
-                        ticket_code: 'SB-2026-8942',
-                        customer_name: 'أحمد محمود',
-                        customer_phone: '01012345678',
-                        car_info: 'تويوتا Corolla (2023)',
-                        service_title: 'صيانة دورية 10.000 كم',
-                        district_display: 'مدينة 6 أكتوبر',
-                        booking_date: '2026-08-23',
-                        booking_time: '10:30 AM',
-                        total_price: 1450.00,
-                        status: 'confirmed',
-                        status_display: 'مؤكد'
-                    }
-                ]
-            });
-        });
-}
-
-function renderAdminDashboard(data) {
-    const totalCountEl = document.getElementById('adminTotalCount');
-    const totalRevenueEl = document.getElementById('adminTotalRevenue');
-    const activeCountEl = document.getElementById('adminActiveCount');
-    const tbody = document.getElementById('adminBookingsTbody');
-
-    if (totalCountEl) totalCountEl.textContent = data.total_count;
-    if (totalRevenueEl) totalRevenueEl.textContent = `${data.total_revenue.toLocaleString()} ج.م`;
-    if (activeCountEl) activeCountEl.textContent = data.total_count;
-
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    if (!data.bookings || data.bookings.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">لا يوجد أمر عمل مسجل حتى الآن.</td></tr>';
-        return;
-    }
-
-    data.bookings.forEach(b => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td class="tabular" style="font-weight: bold; color: var(--color-primary);">${b.ticket_code}</td>
-            <td><strong>${b.customer_name}</strong><br><small style="color: var(--color-muted);">${b.customer_phone}</small></td>
-            <td>${b.car_info}</td>
-            <td>${b.service_title}</td>
-            <td>${b.district_display}<br><small class="tabular">${b.booking_date} | ${b.booking_time}</small></td>
-            <td class="tabular" style="color: var(--color-accent); font-weight: bold;">${b.total_price} ج.م</td>
-            <td><span class="status-badge ${b.status}">${b.status_display}</span></td>
-            <td>
-                <select class="status-select" onchange="updateBookingStatus('${b.ticket_code}', this.value)">
-                    <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>مؤكد</option>
-                    <option value="in_progress" ${b.status === 'in_progress' ? 'selected' : ''}>قيد الصيانة</option>
-                    <option value="completed" ${b.status === 'completed' ? 'selected' : ''}>مكتمل</option>
-                    <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>ملغى</option>
-                </select>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-
-    if (typeof feather !== 'undefined') feather.replace();
-}
-
-function updateBookingStatus(ticketCode, statusValue) {
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]') ? 
-                      document.querySelector('[name=csrfmiddlewaretoken]').value : '';
-
-    fetch('/api/admin/update-status/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken
-        },
-        body: JSON.stringify({ ticket_code: ticketCode, status: statusValue })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            loadAdminBookings();
-        }
-    });
+function goToHomePage(event) {
+    if (event) event.preventDefault();
+    showMainPortal();
+    navigateToStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**
@@ -493,12 +391,78 @@ function validateStep(step) {
             return false;
         }
     } else if (step === 3) {
+        const addressInput = document.getElementById('addressNotesInput');
+        if (!addressInput || !addressInput.value.trim()) {
+            alert('يرجى إدخال عنوان تواجد السيارة بالتفصيل (أو الضغط على زر تحديد موقعي بالـ GPS 📍)');
+            if (addressInput) addressInput.focus();
+            return false;
+        }
         if (!bookingData.bookingTime) {
-            alert('يرجى اختيار موعد الحجز المناسب لك من قائمة المواعيد المتاحة');
+            alert('يرجى اختيار موعد وصول سيارة الصيانة المناسب لك من قائمة المواعيد المتاحة');
             return false;
         }
     }
     return true;
+}
+
+/**
+ * GPS AUTO DETECT LOCATION
+ */
+function detectGPSLocation() {
+    const gpsBtn = document.getElementById('gpsBtn');
+    const gpsBtnText = document.getElementById('gpsBtnText');
+    const gpsHint = document.getElementById('gpsHint');
+    const addressInput = document.getElementById('addressNotesInput');
+
+    if (!navigator.geolocation) {
+        alert('خاصية تحديد الموقع الجغرافي (GPS) غير مدعومة في متصفحك.');
+        return;
+    }
+
+    if (gpsBtnText) gpsBtnText.textContent = 'جاري تحديد موقعك الجغرافي بدقة... 🛰️';
+    if (gpsBtn) gpsBtn.disabled = true;
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+            const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
+            
+            const gpsInfo = `[📍 GPS: ${lat}, ${lng} | الخريطة: ${mapsUrl}]`;
+            
+            if (addressInput) {
+                const currentVal = addressInput.value.trim();
+                if (currentVal && !currentVal.includes('GPS:')) {
+                    addressInput.value = `${currentVal} - ${gpsInfo}`;
+                } else {
+                    addressInput.value = `موقعي الحالي - ${gpsInfo}`;
+                }
+                bookingData.addressNotes = addressInput.value;
+            }
+
+            if (gpsBtnText) gpsBtnText.textContent = 'تم التقاط موقعك الجغرافي بنجاح! 📍';
+            if (gpsHint) {
+                gpsHint.textContent = `تم تسجيل إحداثيات موقعك (${lat}, ${lng}) - يرجى كتابة اسم الشارع أو رقم الفيلا للتأكيد.`;
+                gpsHint.style.color = 'var(--color-go)';
+            }
+            if (gpsBtn) {
+                gpsBtn.disabled = false;
+                gpsBtn.classList.add('gps-success');
+            }
+            updateJobCard();
+        },
+        (error) => {
+            console.warn('GPS Error:', error);
+            if (gpsBtnText) gpsBtnText.textContent = 'تحديد موقعي الحالي بالـ GPS 📍';
+            if (gpsBtn) gpsBtn.disabled = false;
+            if (gpsHint) {
+                gpsHint.textContent = 'تعذر التقاط الـ GPS تلقائياً. يرجى إدخال اسم الشارع ورقم العقار يدوياً.';
+                gpsHint.style.color = '#E53E3E';
+            }
+            alert('يرجى السماح بصلاحية الموقع في المتصفح، أو إدخال العنوان يدوياً بالتفصيل.');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
 }
 
 function selectService(cardElem) {
@@ -511,6 +475,28 @@ function selectService(cardElem) {
     bookingData.serviceDuration = cardElem.getAttribute('data-duration') || 60;
 
     updateJobCard();
+}
+
+function quickSelectMake(makeName) {
+    const makeSelect = document.getElementById('carMakeSelect');
+    if (makeSelect) {
+        let found = false;
+        for (let i = 0; i < makeSelect.options.length; i++) {
+            if (makeSelect.options[i].value === makeName || makeSelect.options[i].text.includes(makeName)) {
+                makeSelect.selectedIndex = i;
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            onMakeChange(makeSelect.value);
+            navigateToStep(2);
+            const step2Elem = document.getElementById('stepPane-2');
+            if (step2Elem) {
+                step2Elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    }
 }
 
 function onMakeChange(makeName) {
@@ -690,14 +676,17 @@ function updateJobCard() {
     if (custPhoneInput) bookingData.customerPhone = custPhoneInput.value.trim();
 
     const cardServiceName = document.getElementById('cardServiceName');
+    const cardServiceTitle = document.getElementById('cardServiceTitle');
     const cardServiceDuration = document.getElementById('cardServiceDuration');
     const cardTotalPrice = document.getElementById('cardTotalPrice');
 
     if (cardServiceName) cardServiceName.textContent = bookingData.serviceTitle;
+    if (cardServiceTitle) cardServiceTitle.textContent = bookingData.serviceTitle ? `${bookingData.serviceTitle} (${bookingData.serviceDuration} د)` : 'صيانة دورية 10,000 كم';
     if (cardServiceDuration) cardServiceDuration.innerHTML = `<i data-feather="clock"></i> المدة التقديرية: ${bookingData.serviceDuration} دقيقة`;
     if (cardTotalPrice) cardTotalPrice.textContent = bookingData.servicePrice.toLocaleString('en-US', { minimumFractionDigits: 0 });
 
     const cardCarSummary = document.getElementById('cardCarSummary');
+    const cardCarInfo = document.getElementById('cardCarInfo');
     const cardCarPlate = document.getElementById('cardCarPlate');
     if (cardCarSummary) {
         if (bookingData.carMake && bookingData.carModel) {
@@ -706,18 +695,33 @@ function updateJobCard() {
             cardCarSummary.textContent = 'لم يتم تحديد السيارة بعد';
         }
     }
+    if (cardCarInfo) {
+        if (bookingData.carMake && bookingData.carModel) {
+            cardCarInfo.textContent = `${bookingData.carMake} ${bookingData.carModel} (${bookingData.carYear})`;
+        } else {
+            cardCarInfo.textContent = 'اختر ماركة وموديل السيارة';
+        }
+    }
     if (cardCarPlate) {
         cardCarPlate.textContent = bookingData.carPlate ? `رقم اللوحة: ${bookingData.carPlate}` : '---';
     }
 
     const cardBranchSummary = document.getElementById('cardBranchSummary');
     const cardSlotSummary = document.getElementById('cardSlotSummary');
+    const cardScheduleInfo = document.getElementById('cardScheduleInfo');
     if (cardBranchSummary) cardBranchSummary.textContent = bookingData.districtText;
     if (cardSlotSummary) {
         if (bookingData.bookingDate && bookingData.bookingTime) {
             cardSlotSummary.textContent = `بتاريخ ${bookingData.bookingDate} الساعة ${bookingData.bookingTime}`;
         } else {
             cardSlotSummary.textContent = 'اختر موعدك في الخطوة 3';
+        }
+    }
+    if (cardScheduleInfo) {
+        if (bookingData.bookingDate && bookingData.bookingTime) {
+            cardScheduleInfo.textContent = `${bookingData.districtText} - ${bookingData.bookingDate} (${bookingData.bookingTime})`;
+        } else {
+            cardScheduleInfo.textContent = bookingData.districtText ? `${bookingData.districtText} - حدد الموعد` : 'حدد منطقتك وموعد وصول الفني';
         }
     }
 
@@ -824,25 +828,75 @@ function submitBooking() {
     });
 }
 
+function copyInstapay(textToCopy, btnElem) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const originalText = btnElem.textContent;
+            btnElem.textContent = 'تم النسخ ✓';
+            btnElem.classList.add('copied');
+            setTimeout(() => {
+                btnElem.textContent = originalText;
+                btnElem.classList.remove('copied');
+            }, 2000);
+        }).catch(() => {
+            alert('تم نسخ البيانات: ' + textToCopy);
+        });
+    } else {
+        alert('بيانات التحويل: ' + textToCopy);
+    }
+}
+
 function showModalReceipt(jobCard) {
     const modal = document.getElementById('bookingModal');
     const ticketBox = document.getElementById('modalTicketCode');
     const detailsBox = document.getElementById('modalReceiptDetails');
+    const whatsappBtn = document.getElementById('modalWhatsappBtn');
 
     if (ticketBox) ticketBox.textContent = jobCard.ticket_code;
     
     if (detailsBox) {
         detailsBox.innerHTML = `
-            <div><strong>اسم الحساب المسجل:</strong> ${jobCard.customer_name} (${jobCard.customer_phone})</div>
-            <div><strong>الخدمة:</strong> ${jobCard.service_title} (${jobCard.duration_mins} دقيقة)</div>
-            <div><strong>السيارة:</strong> ${jobCard.car_info}</div>
-            <div><strong>الفرع:</strong> ${jobCard.district_display}</div>
-            <div><strong>موعد الحضور:</strong> ${jobCard.booking_date} الساعة ${jobCard.booking_time}</div>
-            <div><strong>إجمالي المبلغ:</strong> <span style="color: var(--color-accent); font-weight: bold;">${jobCard.total_price} ج.م</span> (شامل الضريبة وقطع الغيار)</div>
+            <div><strong>اسم العميل:</strong> ${jobCard.customer_name} (${jobCard.customer_phone})</div>
+            <div><strong>خدمة الصيانة:</strong> ${jobCard.service_title} (${jobCard.duration_mins} دقيقة)</div>
+            <div><strong>بيانات السيارة:</strong> ${jobCard.car_info}</div>
+            <div><strong>منطقة وموقع الصيانة:</strong> ${jobCard.district_display} ${jobCard.address_notes ? `(${jobCard.address_notes})` : ''}</div>
+            <div><strong>موعد وصول سيارة الصيانة:</strong> ${jobCard.booking_date} الساعة ${jobCard.booking_time}</div>
+            <div><strong>إجمالي تكلفة الخدمة:</strong> <span style="color: var(--color-primary); font-weight: bold;">${jobCard.total_price} ج.م</span> (شامل الضريبة وقطع الغيار الأصلية)</div>
         `;
     }
 
+    // Build Formatted WhatsApp Message
+    const waText = 
+`🚗 *طلب حجز صيانة سيارة متنقلة - EGS Elite Garage*
+━━━━━━━━━━━━━━━━━━━
+📋 *رقم أمر العمل:* ${jobCard.ticket_code}
+👤 *اسم العميل:* ${jobCard.customer_name}
+📞 *رقم الهاتف:* ${jobCard.customer_phone}
+🚘 *السيارة:* ${jobCard.car_info}
+🔧 *الخدمة المطلوبة:* ${jobCard.service_title}
+📍 *الموقع والعنوان:* ${jobCard.district_display} - ${jobCard.address_notes || 'موقع العميل'}
+📅 *موعد وصول الفني:* ${jobCard.booking_date} الساعة ${jobCard.booking_time}
+💰 *إجمالي التكلفة:* ${jobCard.total_price} ج.م
+
+━━━━━━━━━━━━━━━━━━━
+💳 *بيانات الدفع والتحويل عبر إنستاباي (InstaPay):*
+🔹 *معرف إنستاباي (IPA):* egs.garage@instapay
+🔹 *رقم الهاتف للتحويل:* 01019900990
+🔹 *اسم الحساب:* Elite Garage Service Center
+📌 *مرفق لحضرتكم إيصال التحويل لتأكيد الحجز وبدء تحرك سيارة الصيانة فوراً.*
+━━━━━━━━━━━━━━━━━━━
+مركز EGS لخدمات الصيانة المتنقلة الفورية 🚚`;
+
+    // WhatsApp Business Hotline: 01019900990
+    const egsWhatsappNumber = '201019900990';
+    const waUrl = `https://api.whatsapp.com/send?phone=${egsWhatsappNumber}&text=${encodeURIComponent(waText)}`;
+
+    if (whatsappBtn) {
+        whatsappBtn.href = waUrl;
+    }
+
     if (modal) modal.classList.add('active');
+    if (typeof feather !== 'undefined') feather.replace();
 }
 
 function closeModal() {

@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيرفيس باي | Service Bay - مركز الصيانة السريعة المعتمد</title>
-    <meta name="description" content="منصة سيرفيس باي لحجز خدمات صيانة السيارات الفورية بأعلى معايير الدقة والشفافية. اختر خدمتك، سيارتك، والموعد المناسب خلال ثوانٍ.">
+    <title>EGS | Elite Garage - خدمة الصيانة المتنقلة الفورية (بنجيلك لحد بيتك)</title>
+    <meta name="description" content="منصة EGS لصيانة السيارات المتنقلة الفورية. نصلك لباب بيتك أو مكان عملك بأحدث أجهزة الفحص وشفط الزيوت بدون أي فوضى في 6 أكتوبر والشيخ زايد.">
 
-    <!-- Fonts: Zain & IBM Plex Sans Arabic -->
+    <!-- Fonts: Cairo & Alexandria (Premium Modern Arabic) & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Zain:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
@@ -20,20 +20,66 @@
 </head>
 <body>
 
-    <!-- 1. SPLASH SCREEN / CAR DIAGNOSTIC LOADER -->
+    <!-- 1. SPLASH SCREEN / EGS TELEMETRY LOADER -->
     <div class="splash-overlay" id="splashLoader">
         <div class="splash-content">
-            <div class="car-telemetry-box">
-                <svg class="car-scanner-svg" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 65 L40 65 L55 40 L130 40 L155 65 L180 65 C185 65 190 70 190 75 L190 80 L10 80 L10 75 C10 70 15 65 20 65 Z" stroke="#1E6BE0" stroke-width="3.5" stroke-linejoin="round"/>
-                    <circle cx="45" cy="80" r="12" fill="#132132" stroke="#F5A524" stroke-width="3.5"/>
-                    <circle cx="150" cy="80" r="12" fill="#132132" stroke="#F5A524" stroke-width="3.5"/>
-                    <path d="M60 44 L125 44 L115 60 L60 60 Z" stroke="#1E9E6A" stroke-width="2.5"/>
-                    <line class="laser-beam" x1="0" y1="10" x2="200" y2="10" stroke="#F5A524" stroke-width="3"/>
+            <div class="splash-logo-card">
+                <svg viewBox="0 0 240 140" style="width: 100%; height: auto; display: block;">
+                    <defs>
+                        <linearGradient id="splashGradLeft" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#00D2FF"/>
+                            <stop offset="100%" stop-color="#0080FF"/>
+                        </linearGradient>
+                        <linearGradient id="splashGradMid" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#0080FF"/>
+                            <stop offset="100%" stop-color="#0055FF"/>
+                        </linearGradient>
+                        <linearGradient id="splashGradRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0066FF"/>
+                            <stop offset="100%" stop-color="#003DBD"/>
+                        </linearGradient>
+                        <linearGradient id="splashNeedleGrad" x1="0" y1="105" x2="0" y2="25" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#0055FF"/>
+                            <stop offset="50%" stop-color="#00A3FF"/>
+                            <stop offset="100%" stop-color="#FFFFFF"/>
+                        </linearGradient>
+                        <filter id="splashGaugeShadow" x="-30%" y="-30%" width="160%" height="160%">
+                            <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#0066FF" flood-opacity="0.18"/>
+                        </filter>
+                        <filter id="splashNeedleGlow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#00D2FF" flood-opacity="0.70"/>
+                        </filter>
+                    </defs>
+                    <g filter="url(#splashGaugeShadow)">
+                        <path d="M 40.79 126.22 A 82 82 0 0 1 63.04 46.01 L 78.32 61.84 A 60 60 0 0 0 62.04 120.53 Z" fill="url(#splashGradLeft)"/>
+                        <path d="M 69.52 40.38 A 82 82 0 0 1 170.48 40.38 L 156.94 57.72 A 60 60 0 0 0 83.06 57.72 Z" fill="url(#splashGradMid)"/>
+                        <path d="M 176.96 46.01 A 82 82 0 0 1 199.21 126.22 L 177.96 120.53 A 60 60 0 0 0 161.68 61.84 Z" fill="url(#splashGradRight)"/>
+                    </g>
+                    <g class="egs-needle-group" filter="url(#splashNeedleGlow)">
+                        <animateTransform
+                            attributeName="transform"
+                            type="rotate"
+                            values="-50 120 105; 38 120 105; 10 120 105; 42 120 105; -15 120 105; 25 120 105; -50 120 105"
+                            keyTimes="0; 0.22; 0.36; 0.54; 0.70; 0.86; 1"
+                            dur="3.2s"
+                            repeatCount="indefinite"
+                            calcMode="spline"
+                            keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                        />
+                        <polygon points="117.5,105 120,25 122.5,105" fill="url(#splashNeedleGrad)"/>
+                        <line x1="120" y1="102" x2="120" y2="28" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.95"/>
+                        <circle cx="120" cy="105" r="4.5" fill="#0066FF" stroke="#FFFFFF" stroke-width="1.5"/>
+                    </g>
+                    <g fill="#0B0B0E">
+                        <path d="M 57 104 L 63 71 L 93 71 L 91.6 77.5 L 70.8 77.5 L 69.4 83.5 L 88.5 83.5 L 87.1 89.8 L 68 89.8 L 66.5 97.5 L 90.5 97.5 L 89.1 104 Z"/>
+                        <path d="M 136 71 L 109 71 C 100 71 95 76 93 84 C 91 93 94.5 104 104 104 L 127 104 C 134 104 137.5 99.5 138.5 94 L 139.5 87 L 117.5 87 L 116.3 93 L 126.5 93 L 125.4 97.5 C 124.8 98.8 122.5 99.2 119.5 99.2 L 107 99.2 C 102 99.2 99.5 95 100.5 89 C 101.5 83 105 76.5 112 76.5 L 134.8 76.5 Z"/>
+                        <path d="M 178 71 L 150 71 C 143 71 139 74.8 138 79.5 C 137 85.5 141 89 148 90.8 L 159 93.8 C 164.5 95.2 165.8 97 165.2 99.2 C 164.2 102.5 160 104 153.5 104 L 137 104 L 138.5 98 L 145.5 98 C 149.5 98 153 98 154 96.5 C 154.8 95 153 94 147 92.5 L 137.5 90 C 131 88 129.5 83 130.5 78 C 132 72.8 137.5 71 146.5 71 L 178 71 Z"/>
+                    </g>
+                    <text x="120" y="132" text-anchor="middle" font-family="'Outfit', 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="10.5px" letter-spacing="0.2px" fill="#0B0B0E">Elite Garage Service Center</text>
                 </svg>
             </div>
-            <div class="splash-brand">SERVICE BAY</div>
-            <div class="splash-sub">جاري فحص حالة المركز وتشغيل المواعيد...</div>
+            <div class="splash-brand">ELITE GARAGE SERVICE</div>
+            <div class="splash-sub">جاري فحص حالة أسطول الصيانة وتشغيل المواعيد...</div>
             <div class="splash-progress-track">
                 <div class="splash-progress-bar" id="splashBar"></div>
             </div>
@@ -41,23 +87,71 @@
         </div>
     </div>
 
-    <!-- 2. HEADER NAVIGATION BAR -->
+    <!-- HEADER NAVIGATION BAR -->
     <header class="app-header">
         <div class="header-container">
-            <div class="brand-logo" onclick="showMainPortal()">
-                <div class="logo-badge">
-                    <i data-feather="tool"></i>
+            <a href="/" class="brand-logo" onclick="goToHomePage(event)" title="الرئيسية - EGS Elite Garage">
+                <div class="egs-logo-badge">
+                    <svg viewBox="0 0 240 140" style="height: 68px; width: auto; display: block;">
+                        <defs>
+                            <linearGradient id="navGradLeft" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#00D2FF"/>
+                                <stop offset="100%" stop-color="#0080FF"/>
+                            </linearGradient>
+                            <linearGradient id="navGradMid" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#0080FF"/>
+                                <stop offset="100%" stop-color="#0055FF"/>
+                            </linearGradient>
+                            <linearGradient id="navGradRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#0066FF"/>
+                                <stop offset="100%" stop-color="#003DBD"/>
+                            </linearGradient>
+                            <linearGradient id="navNeedleGrad" x1="0" y1="105" x2="0" y2="25" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#0055FF"/>
+                                <stop offset="50%" stop-color="#00A3FF"/>
+                                <stop offset="100%" stop-color="#FFFFFF"/>
+                            </linearGradient>
+                            <filter id="navGaugeShadow" x="-30%" y="-30%" width="160%" height="160%">
+                                <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#0066FF" flood-opacity="0.18"/>
+                            </filter>
+                            <filter id="navNeedleGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#00D2FF" flood-opacity="0.70"/>
+                            </filter>
+                        </defs>
+                        <g filter="url(#navGaugeShadow)">
+                            <path d="M 40.79 126.22 A 82 82 0 0 1 63.04 46.01 L 78.32 61.84 A 60 60 0 0 0 62.04 120.53 Z" fill="url(#navGradLeft)"/>
+                            <path d="M 69.52 40.38 A 82 82 0 0 1 170.48 40.38 L 156.94 57.72 A 60 60 0 0 0 83.06 57.72 Z" fill="url(#navGradMid)"/>
+                            <path d="M 176.96 46.01 A 82 82 0 0 1 199.21 126.22 L 177.96 120.53 A 60 60 0 0 0 161.68 61.84 Z" fill="url(#navGradRight)"/>
+                        </g>
+                        <g class="egs-needle-group" filter="url(#navNeedleGlow)">
+                            <animateTransform
+                                attributeName="transform"
+                                type="rotate"
+                                values="-50 120 105; 38 120 105; 10 120 105; 42 120 105; -15 120 105; 25 120 105; -50 120 105"
+                                keyTimes="0; 0.22; 0.36; 0.54; 0.70; 0.86; 1"
+                                dur="3.2s"
+                                repeatCount="indefinite"
+                                calcMode="spline"
+                                keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                            />
+                            <polygon points="117.5,105 120,25 122.5,105" fill="url(#navNeedleGrad)"/>
+                            <line x1="120" y1="102" x2="120" y2="28" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.95"/>
+                            <circle cx="120" cy="105" r="4.5" fill="#0066FF" stroke="#FFFFFF" stroke-width="1.5"/>
+                        </g>
+                        <g fill="#0B0B0E">
+                            <path d="M 57 104 L 63 71 L 93 71 L 91.6 77.5 L 70.8 77.5 L 69.4 83.5 L 88.5 83.5 L 87.1 89.8 L 68 89.8 L 66.5 97.5 L 90.5 97.5 L 89.1 104 Z"/>
+                            <path d="M 136 71 L 109 71 C 100 71 95 76 93 84 C 91 93 94.5 104 104 104 L 127 104 C 134 104 137.5 99.5 138.5 94 L 139.5 87 L 117.5 87 L 116.3 93 L 126.5 93 L 125.4 97.5 C 124.8 98.8 122.5 99.2 119.5 99.2 L 107 99.2 C 102 99.2 99.5 95 100.5 89 C 101.5 83 105 76.5 112 76.5 L 134.8 76.5 Z"/>
+                            <path d="M 178 71 L 150 71 C 143 71 139 74.8 138 79.5 C 137 85.5 141 89 148 90.8 L 159 93.8 C 164.5 95.2 165.8 97 165.2 99.2 C 164.2 102.5 160 104 153.5 104 L 137 104 L 138.5 98 L 145.5 98 C 149.5 98 153 98 154 96.5 C 154.8 95 153 94 147 92.5 L 137.5 90 C 131 88 129.5 83 130.5 78 C 132 72.8 137.5 71 146.5 71 L 178 71 Z"/>
+                        </g>
+                        <text x="120" y="132" text-anchor="middle" font-family="'Outfit', 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="10.5px" letter-spacing="0.2px" fill="#0B0B0E">Elite Garage Service Center</text>
+                    </svg>
                 </div>
-                <div class="brand-titles">
-                    <span class="brand-name">SERVICE BAY</span>
-                    <span class="brand-sub">سيرفيس باي • ورشة الصيانة المعتمدة</span>
-                </div>
-            </div>
+            </a>
 
             <div class="header-meta">
                 <div class="status-indicator">
                     <span class="pulse-dot"></span>
-                    <span>المركز مفتوح الان</span>
+                    <span>عربات الصيانة متوفرة للطلب 🚚</span>
                 </div>
                 
                 <!-- Auth Status Button -->
@@ -68,6 +162,12 @@
                     </button>
                 </div>
 
+                <!-- Django Admin Dashboard Shortcut -->
+                <a href="/admin/" target="_blank" class="dashboard-nav-link" style="display:inline-flex; align-items:center; gap:6px; background:#F8FAFC; border:1px solid #E2E8F0; padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:700; color:#0F172A; text-decoration:none;" title="لوحة تحكم إدارة دجانجو">
+                    <i data-feather="shield" style="width:14px; height:14px; color:#10B981;"></i>
+                    <span>لوحة تحكم الأدمن</span>
+                </a>
+
                 <a href="tel:19900" class="hotline-btn">
                     <i data-feather="phone-call"></i>
                     <span>19900</span>
@@ -76,66 +176,102 @@
         </div>
     </header>
 
-    <!-- ADMIN CONTROL CENTER VIEW -->
-    <div class="admin-view-pane" id="adminViewPane">
-        <div class="admin-header">
-            <div class="admin-title-block">
-                <h2><i data-feather="layout"></i> لوحة تحكم إدارة ورشة سيرفيس باي (Control Center)</h2>
-                <p>متابعة أوامر العمل الفورية، تغيير حالات الصيانة، وإحصائيات الإيرادات الحية.</p>
+    <!-- FULL-WIDTH TOP LUXURY MARQUES STRIP (Directly Under Header) -->
+    <section class="top-marques-bar">
+        <div class="top-marques-container">
+            <div class="top-marques-label">
+                <i data-feather="shield"></i>
+                <span>أجهزة وبرمجيات فحص متخصصة:</span>
             </div>
-            <button class="btn btn-secondary" onclick="logoutAccount()">
-                <i data-feather="log-out"></i>
-                <span>تسجيل الخروج من الأدمن</span>
-            </button>
-        </div>
+            <div class="top-marques-track">
+                <!-- Mercedes-Benz -->
+                <div class="marque-item">
+                    <svg class="marque-svg" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="4"/>
+                        <polygon points="50,14 47,48 50,50 53,48" fill="currentColor"/>
+                        <polygon points="17,69 48,52 50,50 46,47" fill="currentColor"/>
+                        <polygon points="83,69 52,52 50,50 54,47" fill="currentColor"/>
+                        <line x1="50" y1="50" x2="50" y2="14" stroke="currentColor" stroke-width="3"/>
+                        <line x1="50" y1="50" x2="17" y2="69" stroke="currentColor" stroke-width="3"/>
+                        <line x1="50" y1="50" x2="83" y2="69" stroke="currentColor" stroke-width="3"/>
+                    </svg>
+                    <span>Mercedes-Benz</span>
+                </div>
 
-        <div class="admin-stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon icon-blue"><i data-feather="file-text"></i></div>
-                <div class="stat-info">
-                    <div class="stat-label">إجمالي أوامر العمل</div>
-                    <div class="stat-val tabular" id="adminTotalCount">0</div>
+                <!-- BMW -->
+                <div class="marque-item">
+                    <svg class="marque-svg" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="4"/>
+                        <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                        <path d="M 50 20 A 30 30 0 0 1 80 50 L 50 50 Z" fill="#0066FF"/>
+                        <path d="M 20 50 A 30 30 0 0 1 50 80 L 50 50 Z" fill="#0066FF"/>
+                        <line x1="50" y1="20" x2="50" y2="80" stroke="currentColor" stroke-width="2"/>
+                        <line x1="20" y1="50" x2="80" y2="50" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>BMW</span>
                 </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon icon-amber"><i data-feather="dollar-sign"></i></div>
-                <div class="stat-info">
-                    <div class="stat-label">إجمالي إيرادات الصيانة</div>
-                    <div class="stat-val tabular" id="adminTotalRevenue">0 ج.م</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon icon-green"><i data-feather="check-circle"></i></div>
-                <div class="stat-info">
-                    <div class="stat-label">الحالات النشطة والمكتملة</div>
-                    <div class="stat-val tabular" id="adminActiveCount">0</div>
-                </div>
-            </div>
-        </div>
 
-        <div class="admin-table-card">
-            <h3><i data-feather="list"></i> جدول متابعة أوامر العمل والمواعيد</h3>
-            <div class="table-responsive">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>رقم أمر العمل</th>
-                            <th>العميل والهاتف</th>
-                            <th>السيارة</th>
-                            <th>الخدمة المختارة</th>
-                            <th>الفرع والتاريخ</th>
-                            <th>المبلغ</th>
-                            <th>الحالة</th>
-                            <th>إجراءات التحكم</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminBookingsTbody">
-                        <!-- Populated dynamically -->
-                    </tbody>
-                </table>
+                <!-- Porsche -->
+                <div class="marque-item">
+                    <svg class="marque-svg" viewBox="0 0 100 100">
+                        <path d="M 30 18 L 70 18 C 72 18 75 35 75 52 C 75 74 50 86 50 86 C 50 86 25 74 25 52 C 25 35 28 18 30 18 Z" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                        <line x1="50" y1="18" x2="50" y2="86" stroke="currentColor" stroke-width="2"/>
+                        <line x1="26" y1="46" x2="74" y2="46" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="50" cy="46" r="8" fill="#0066FF"/>
+                    </svg>
+                    <span>Porsche</span>
+                </div>
+
+                <!-- Audi -->
+                <div class="marque-item">
+                    <svg class="marque-svg" viewBox="0 0 100 100">
+                        <circle cx="24" cy="50" r="16" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                        <circle cx="41" cy="50" r="16" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                        <circle cx="59" cy="50" r="16" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                        <circle cx="76" cy="50" r="16" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                    </svg>
+                    <span>Audi</span>
+                </div>
+
+                <!-- Land Rover / Range Rover -->
+                <div class="marque-item">
+                    <svg class="marque-svg" viewBox="0 0 100 100">
+                        <ellipse cx="50" cy="50" rx="44" ry="24" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                        <text x="50" y="55" font-family="'Outfit', 'Cairo', sans-serif" font-size="11" font-weight="900" letter-spacing="1" fill="currentColor" text-anchor="middle">ROVER</text>
+                    </svg>
+                    <span>Range Rover</span>
+                </div>
+
+                <!-- Lexus -->
+                <div class="marque-item">
+                    <svg class="marque-svg" viewBox="0 0 100 100">
+                        <ellipse cx="50" cy="50" rx="42" ry="30" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                        <path d="M 68 34 L 38 66 L 64 66" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Lexus</span>
+                </div>
+
+                <!-- Volkswagen -->
+                <div class="marque-item">
+                    <svg class="marque-svg" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                        <path d="M 28 32 L 42 68 L 50 48 L 58 68 L 72 32 M 35 32 L 50 62 L 65 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Volkswagen</span>
+                </div>
+
+                <!-- Toyota -->
+                <div class="marque-item">
+                    <svg class="marque-svg" viewBox="0 0 100 100">
+                        <ellipse cx="50" cy="50" rx="44" ry="30" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                        <ellipse cx="50" cy="38" rx="26" ry="12" fill="none" stroke="currentColor" stroke-width="2.8"/>
+                        <ellipse cx="50" cy="52" rx="12" ry="24" fill="none" stroke="currentColor" stroke-width="2.8"/>
+                    </svg>
+                    <span>Toyota</span>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- MAIN PORTAL CONTAINER -->
     <main class="main-layout" id="mainPortalLayout">
@@ -182,18 +318,18 @@
 
         <div class="content-wrapper">
 
-            <!-- Left Column: Hero & Booking Stepper -->
+            <!-- Main Booking Stepper Column -->
             <div class="booking-column">
                 
-                <!-- Hero Banner -->
+                <!-- Clean Hero Banner -->
                 <section class="hero-section">
                     <div class="hero-content">
                         <div class="hero-pill">
-                            <i data-feather="shield"></i>
-                            <span>ضمان حقيقي 6 أشهر على جميع الأعمال</span>
+                            <i data-feather="truck"></i>
+                            <span>ورشة صيانة متنقلة ومجهزة بالكامل تصلك لباب بيتك</span>
                         </div>
-                        <h1 class="hero-title">صيانة سيارتك بكل دقة وشفافية. بدون مفاجآت.</h1>
-                        <p class="hero-subtitle">اختر نوع الصيانة، حدد سيارتك، واحجز موعدك فوراً بعد تسجيل الدخول بـ حسابك المعتمد.</p>
+                        <h1 class="hero-title">صيانة سيارتك بتجيلك لحد باب بيتك أو مكان شغلك 🚚</h1>
+                        <p class="hero-subtitle">اختر نوع الصيانة، حدد موقع تواجد السيارة، وستصلك عربة الصيانة المتنقلة المجهزة بأحدث أجهزة الفحص وشفط الزيوت الآمنة بدون فوضى أو إضاعة لوقتك.</p>
                     </div>
                 </section>
 
@@ -201,7 +337,7 @@
                 <div class="account-notice-banner" id="authNoticeBanner">
                     <div class="notice-icon"><i data-feather="lock"></i></div>
                     <div class="notice-text">
-                        <strong>نظام حسابات سيرفيس باي:</strong> يلزم تسجيل الدخول أو إنشاء حساب جديد لتأكيد حجز الصيانة واستلام كارت العمل الرقمي.
+                        <strong>نظام حسابات EGS:</strong> يلزم تسجيل الدخول أو إنشاء حساب جديد لتأكيد حجز سيارة الصيانة المتنقلة واستلام كارت العمل الرقمي.
                     </div>
                     <button class="btn btn-secondary btn-sm" onclick="openLoginModal()">تسجيل الدخول الأن</button>
                 </div>
@@ -214,7 +350,7 @@
                     <div class="steps-grid">
                         <div class="step-item active" id="stepIndicator-1" onclick="navigateToStep(1)">
                             <div class="step-node">1</div>
-                            <span class="step-label">الخدمة</span>
+                            <span class="step-label">نوع الخدمة</span>
                         </div>
                         <div class="step-item" id="stepIndicator-2" onclick="navigateToStep(2)">
                             <div class="step-node">2</div>
@@ -222,7 +358,7 @@
                         </div>
                         <div class="step-item" id="stepIndicator-3" onclick="navigateToStep(3)">
                             <div class="step-node">3</div>
-                            <span class="step-label">الموعد والموقع</span>
+                            <span class="step-label">الموقع والموعد 📍</span>
                         </div>
                         <div class="step-item" id="stepIndicator-4" onclick="navigateToStep(4)">
                             <div class="step-node">4</div>
@@ -234,8 +370,8 @@
                 <!-- STEP 1: SERVICE SELECTION -->
                 <section class="step-pane active" id="stepPane-1">
                     <div class="pane-header">
-                        <h2>1. اختر خدمة الصيانة المطلوب تنفيذها</h2>
-                        <p>أسعار صريحة تشمل قطع الغيار الأصلية وأجور الفنيين مع تقرير رقمي مفصل.</p>
+                        <h2>1. اختر خدمة الصيانة المطلوبة</h2>
+                        <p>خدمات صيانة فورية ونظيفة تنفذ أمام عينك في مكانك بأحدث المعدات الألمانية وبدون أي فوضى أو تسريب زيوت.</p>
                     </div>
 
                     <!-- CATEGORY FILTER TABS -->
@@ -368,28 +504,42 @@
                 <!-- STEP 3: LOCATION & SLOTS -->
                 <section class="step-pane" id="stepPane-3">
                     <div class="pane-header">
-                        <h2>3. اختر الفرع والموعد المناسب</h2>
-                        <p>تتاح المواعيد بناءً على الطاقة الاستيعابية الحقيقية لحارات الخدمة بالمركز.</p>
+                        <h2>3. حدد موقع تواجد السيارة وموعد وصول الفني 📍</h2>
+                        <p>تصلك سيارة الصيانة المتنقلة المجهزة إلى عنوانك في الموعد المحدد بناءً على توفر عربات الخدمة بمنطقتك.</p>
                     </div>
 
                     <div class="location-card">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="districtSelect"><i data-feather="map-pin"></i> منطقة الفرع</label>
+                                <label for="districtSelect"><i data-feather="map"></i> المنطقة / المدينة</label>
                                 <select id="districtSelect" class="form-control" onchange="updateJobCard()">
-                                    <option value="October" selected>فرع مدينة 6 أكتوبر (المنطقة الصناعية)</option>
-                                    <option value="Zayed">فرع الشيخ زايد (وصلة دهشور)</option>
+                                    <option value="October" selected>مدينة 6 أكتوبر (جميع الأحياء)</option>
+                                    <option value="Zayed">الشيخ زايد (جميع الأحياء والكومباوندات)</option>
+                                    <option value="Haram_Gardens">حدائق الأهرام</option>
+                                    <option value="October_Gardens">حدائق أكتوبر</option>
+                                    <option value="New_Cairo">التجمع والقاهرة الجديدة</option>
+                                    <option value="Maadi">المعادي</option>
+                                    <option value="Other">منطقة أخرى (يرجى توضيحها بالعنوان)</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="addressNotesInput"><i data-feather="navigation"></i> عنوانك أو ملاحظات الوصل</label>
-                                <input type="text" id="addressNotesInput" class="form-control" placeholder="مثال: بالقرب من المحور المركزي" oninput="updateJobCard()">
+                                <label for="addressNotesInput"><i data-feather="map-pin"></i> العنوان بالتفصيل</label>
+                                <input type="text" id="addressNotesInput" class="form-control" placeholder="الشارع / رقم العمارة أو الفيلا / اسم الكومباوند أو علامة مميزة" required oninput="updateJobCard()">
                             </div>
+                        </div>
+
+                        <!-- GPS Location Button Row -->
+                        <div class="gps-action-row">
+                            <button type="button" class="btn-gps-locate" id="gpsBtn" onclick="detectGPSLocation()">
+                                <i data-feather="crosshair"></i>
+                                <span id="gpsBtnText">تحديد موقعي الحالي تلقائياً بالـ GPS 📍</span>
+                            </button>
+                            <span class="gps-hint" id="gpsHint">اضغط لجلب إحداثيات موقعك الجغرافي لتصلك سيارة الصيانة فوراً ودون عناء الوصف.</span>
                         </div>
                     </div>
 
                     <div class="date-strip-wrapper">
-                        <div class="strip-label"><i data-feather="calendar"></i> اختر تاريخ اليوم:</div>
+                        <div class="strip-label"><i data-feather="calendar"></i> اختر تاريخ الموعد:</div>
                         <div class="date-strip" id="dateStrip">
                             {% for dt in upcoming_dates %}
                             <div class="date-chip {% if forloop.first %}selected{% endif %}" 
@@ -413,7 +563,7 @@
                         <div class="slot-group">
                             <div class="group-header">
                                 <i data-feather="sun"></i>
-                                <span>فترة الصباح (09:00 ص - 12:00 ظ)</span>
+                                <span>فترة الصباح — وصول الفني (09:00 ص - 12:00 ظ)</span>
                             </div>
                             <div class="slots-grid" id="morningSlots"></div>
                         </div>
@@ -421,7 +571,7 @@
                         <div class="slot-group">
                             <div class="group-header">
                                 <i data-feather="cloud-sun"></i>
-                                <span>فترة الظهيرة (12:00 ظ - 04:00 ع)</span>
+                                <span>فترة الظهيرة — وصول الفني (12:00 ظ - 04:00 ع)</span>
                             </div>
                             <div class="slots-grid" id="afternoonSlots"></div>
                         </div>
@@ -429,7 +579,7 @@
                         <div class="slot-group">
                             <div class="group-header">
                                 <i data-feather="moon"></i>
-                                <span>فترة المساء (04:00 ع - 08:00 م)</span>
+                                <span>فترة المساء — وصول الفني (04:00 ع - 08:00 م)</span>
                             </div>
                             <div class="slots-grid" id="eveningSlots"></div>
                         </div>
@@ -451,7 +601,7 @@
                 <section class="step-pane" id="stepPane-4">
                     <div class="pane-header">
                         <h2>4. بيانات التواصل وتأكيد الحجز للحساب المسجل</h2>
-                        <p>سيتم استخدام حسابك المفعل لإصدار كارت العمل وإرسال تأكيد الموعد بالواتساب والـ SMS.</p>
+                        <p>سيتم استخدام حسابك المفعل لإصدار كارت العمل وإرسال تأكيد الموعد وبيانات الفني المتوجه إليك.</p>
                     </div>
 
                     <div class="form-card">
@@ -467,9 +617,9 @@
                         </div>
 
                         <div class="terms-box">
-                            <div class="terms-icon"><i data-feather="info"></i></div>
+                            <div class="terms-icon"><i data-feather="truck"></i></div>
                             <div class="terms-text">
-                                <strong>تنويه سيرفيس باي:</strong> يتم فحص السيارة فور وصولها وبحضور العميل، وتزويدك بتقرير فوتوغرافي وحراري شامل قبل بدء أية أعمال إضافية.
+                                <strong>تنويه خدمة الصيانة المتنقلة EGS:</strong> تصلك سيارة الصيانة المجهزة في الموعد والموقع المحددين، ويتم تنفيذ كافة الأعمال أمامك مع تسليم كارت العمل وضمان معتمد على جميع قطع الغيار.
                             </div>
                         </div>
                     </div>
@@ -486,115 +636,7 @@
                     </div>
                 </section>
 
-                <!-- TRUST STRIP -->
-                <section class="trust-strip">
-                    <div class="trust-item">
-                        <div class="trust-icon"><i data-feather="shield-check"></i></div>
-                        <div class="trust-body">
-                            <h4>ضمان معتمد 6 أشهر</h4>
-                            <p>على جميع قطع الغيار وأعمال الفنيين</p>
-                        </div>
-                    </div>
-                    <div class="trust-divider"></div>
-                    <div class="trust-item">
-                        <div class="trust-icon"><i data-feather="package"></i></div>
-                        <div class="trust-body">
-                            <h4>قطع غيار أصلية 100%</h4>
-                            <p>مستوردة مباشرة ومكفولة برقم السيريال</p>
-                        </div>
-                    </div>
-                    <div class="trust-divider"></div>
-                    <div class="trust-item">
-                        <div class="trust-icon"><i data-feather="camera"></i></div>
-                        <div class="trust-body">
-                            <h4>تقرير فوتوغرافي شامل</h4>
-                            <p>صور وفيديوهات لحالة العفشة والمحرك</p>
-                        </div>
-                    </div>
-                </section>
 
-            </div>
-
-            <!-- Right Column: Pinned Live Garage Job Card -->
-            <div class="card-column">
-                <aside class="job-card" id="jobCardSidebar">
-                    <!-- Ticket Header -->
-                    <div class="job-card-header">
-                        <div class="job-ticket-badge">
-                            <span class="dot-live"></span>
-                            <span>أمر عمل مباشر</span>
-                        </div>
-                        <div class="job-ticket-id tabular" id="cardTicketId">SB-2026-8942</div>
-                    </div>
-
-                    <!-- Account Status Row in Job Card -->
-                    <div class="account-status-pill" id="cardAccountPill">
-                        <i data-feather="user"></i>
-                        <span id="cardAccountStatusText">الحساب: غير مسجل (يلزم الدخول)</span>
-                    </div>
-
-                    <!-- Steps Checklist status -->
-                    <div class="job-card-status">
-                        <div class="status-step-row" id="chkStep-1">
-                            <span class="chk-icon"><i data-feather="check"></i></span>
-                            <span class="chk-text">اختيار نوع الخدمة</span>
-                        </div>
-                        <div class="status-step-row" id="chkStep-2">
-                            <span class="chk-icon"><i data-feather="check"></i></span>
-                            <span class="chk-text">تحديد تفاصيل السيارة</span>
-                        </div>
-                        <div class="status-step-row" id="chkStep-3">
-                            <span class="chk-icon"><i data-feather="check"></i></span>
-                            <span class="chk-text">فرع وموعد الحضور</span>
-                        </div>
-                        <div class="status-step-row" id="chkStep-4">
-                            <span class="chk-icon"><i data-feather="check"></i></span>
-                            <span class="chk-text">حساب العميل والاعتماد</span>
-                        </div>
-                    </div>
-
-                    <hr class="card-divider">
-
-                    <!-- Selected Service Details -->
-                    <div class="job-card-section">
-                        <div class="sec-label">الخدمة المطلوبة:</div>
-                        <div class="sec-val service-name-val" id="cardServiceName">صيانة دورية 10.000 كم</div>
-                        <div class="sec-sub" id="cardServiceDuration"><i data-feather="clock"></i> المدة التقديرية: 60 دقيقة</div>
-                    </div>
-
-                    <!-- Vehicle Summary -->
-                    <div class="job-card-section">
-                        <div class="sec-label">بيانات المركبة:</div>
-                        <div class="sec-val" id="cardCarSummary">لم يتم التحديد بعد</div>
-                        <div class="sec-sub" id="cardCarPlate">---</div>
-                    </div>
-
-                    <!-- Time & Branch Summary -->
-                    <div class="job-card-section">
-                        <div class="sec-label">موقع وموعد الحجز:</div>
-                        <div class="sec-val" id="cardBranchSummary">فرع مدينة 6 أكتوبر</div>
-                        <div class="sec-sub" id="cardSlotSummary">اختر موعدك في الخطوة 3</div>
-                    </div>
-
-                    <!-- Customer Info -->
-                    <div class="job-card-section">
-                        <div class="sec-label">العميل صاحب الحساب:</div>
-                        <div class="sec-val" id="cardCustomerName">---</div>
-                        <div class="sec-sub" id="cardCustomerPhone">---</div>
-                    </div>
-
-                    <hr class="card-divider">
-
-                    <!-- Price Footer -->
-                    <div class="job-card-footer">
-                        <div class="total-label">إجمالي تكلفة أمر العمل:</div>
-                        <div class="amber-price-display">
-                            <span class="amber-currency">ج.م</span>
-                            <span class="amber-amount tabular" id="cardTotalPrice">1,450</span>
-                        </div>
-                        <div class="price-note">شامل ضريبة القيمة المضافة وقطع الغيار الأصيلة</div>
-                    </div>
-                </aside>
             </div>
 
         </div>
@@ -614,27 +656,23 @@
                     <i data-feather="user-plus"></i>
                     <span>إنشاء حساب جديد</span>
                 </button>
-                <button class="toggle-tab" id="tabAdminLogin" onclick="switchLoginTab('admin')">
-                    <i data-feather="shield"></i>
-                    <span>أدمن الورشة</span>
-                </button>
             </div>
 
-            <!-- User Sign In Form -->
+            <!-- Unified Smart Sign In Form (Supports Customers & Admin) -->
             <form class="login-form active" id="formUserLogin" onsubmit="handleAuthSubmit(event, 'user')">
-                <h3 class="login-heading">تسجيل دخول لحسابك</h3>
-                <p class="login-subtext">أدخل اسمك أو رقم هاتفك لتسجيل الدخول ومتابعة حجزك</p>
+                <h3 class="login-heading">تسجيل الدخول للحساب</h3>
+                <p class="login-subtext">أدخل بريدك الإلكتروني، اسم المستخدم، أو رقم الهاتف للمتابعة</p>
                 <div class="form-group">
-                    <label for="loginUserInput"><i data-feather="user"></i> الاسم المسجل أو الهاتف</label>
-                    <input type="text" id="loginUserInput" class="form-control" placeholder="مثال: أحمد محمود / 01012345678" required>
+                    <label for="loginUserInput"><i data-feather="user"></i> البريد الإلكتروني أو الهاتف</label>
+                    <input type="text" id="loginUserInput" class="form-control" placeholder="admin@egs.com أو 010XXXXXXXX" required>
                 </div>
                 <div class="form-group">
                     <label for="loginUserPasswordInput"><i data-feather="key"></i> كلمة السر</label>
-                    <input type="password" id="loginUserPasswordInput" class="form-control" placeholder="******" required>
+                    <input type="password" id="loginUserPasswordInput" class="form-control" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">
                     <i data-feather="log-in"></i>
-                    <span>دخول لحسابي ومتابعة الحجز</span>
+                    <span>تسجيل الدخول ومتابعة الحجز</span>
                 </button>
             </form>
 
@@ -659,24 +697,6 @@
                     <span>إنشاء الحساب ومتابعة الحجز</span>
                 </button>
             </form>
-
-            <!-- Admin Login Form -->
-            <form class="login-form" id="formAdminLogin" onsubmit="handleAuthSubmit(event, 'admin')">
-                <h3 class="login-heading">تسجيل دخول مهندس الورشة (Admin)</h3>
-                <p class="login-subtext">الوصول الكامل إلى لوحة تحكم أوامر العمل (admin / admin123)</p>
-                <div class="form-group">
-                    <label for="adminUsernameInput"><i data-feather="user-check"></i> اسم المستخدم</label>
-                    <input type="text" id="adminUsernameInput" class="form-control" placeholder="admin" required>
-                </div>
-                <div class="form-group">
-                    <label for="adminPasswordInput"><i data-feather="key"></i> كلمة السر</label>
-                    <input type="password" id="adminPasswordInput" class="form-control" placeholder="admin123" required>
-                </div>
-                <button type="submit" class="btn btn-go btn-block">
-                    <i data-feather="shield-check"></i>
-                    <span>تسجيل الدخول كـ أدمن</span>
-                </button>
-            </form>
         </div>
     </div>
 
@@ -686,20 +706,50 @@
             <div class="modal-icon-success">
                 <i data-feather="check-circle"></i>
             </div>
-            <h2 class="modal-title">تم اعتماد أمر العمل بنجاح!</h2>
-            <p class="modal-desc">تم حفظ حجزك وتسجيل أمر العمل في حسابك بـ نظام سيرفيس باي. رقم كارت العمل الخاص بك هو:</p>
+            <h2 class="modal-title">تم تأكيد حجز الصيانة المتنقلة بنجاح! 🚚</h2>
+            <p class="modal-desc">تم حفظ طلبك وإصدار أمر العمل بـ نظام EGS. رقم كارت العمل الخاص بك هو:</p>
             <div class="ticket-display-box tabular" id="modalTicketCode">SB-2026-8942</div>
             
             <div class="receipt-summary" id="modalReceiptDetails"></div>
 
+            <!-- INSTAPAY PAYMENT DETAILS CARD -->
+            <div class="instapay-box">
+                <div class="instapay-head">
+                    <span class="instapay-pill">InstaPay</span>
+                    <strong>بيانات التحويل الفوري عبر إنستاباي</strong>
+                </div>
+                <div class="instapay-details">
+                    <div class="instapay-row">
+                        <span class="instapay-label">معرف إنستاباي (IPA):</span>
+                        <strong class="tabular instapay-val" id="instapayIpa">egs.garage@instapay</strong>
+                        <button type="button" class="btn-copy-mini" onclick="copyInstapay('egs.garage@instapay', this)">نسخ</button>
+                    </div>
+                    <div class="instapay-row">
+                        <span class="instapay-label">رقم الهاتف للتحويل:</span>
+                        <strong class="tabular instapay-val" id="instapayPhone">01019900990</strong>
+                        <button type="button" class="btn-copy-mini" onclick="copyInstapay('01019900990', this)">نسخ</button>
+                    </div>
+                    <div class="instapay-note">
+                        <i data-feather="info"></i>
+                        <span>يرجى إرسال إيصال التحويل عبر واتساب لتأكيد الدفع وبدء تحرك الفني لموقعك.</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal-actions">
-                <button class="btn btn-primary" onclick="window.print()">
-                    <i data-feather="printer"></i>
-                    <span>طباعة كارت العمل</span>
-                </button>
-                <button class="btn btn-secondary" onclick="closeModal()">
-                    <span>إغلاق وتقديم حجز جديد</span>
-                </button>
+                <a id="modalWhatsappBtn" href="#" target="_blank" class="btn btn-whatsapp btn-large btn-block">
+                    <i data-feather="message-circle"></i>
+                    <span>إرسال تفاصيل الحجز وتأكيد الدفع عبر واتساب 💬</span>
+                </a>
+                <div class="modal-secondary-actions">
+                    <button class="btn btn-primary" onclick="window.print()">
+                        <i data-feather="printer"></i>
+                        <span>طباعة كارت العمل</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal()">
+                        <span>إغلاق وتقديم حجز جديد</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

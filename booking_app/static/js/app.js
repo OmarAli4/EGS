@@ -50,8 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Load initial time slots
     loadSlots(bookingData.bookingDate);
 
-    // 6. Start Carousel Auto-Scroll Engine
+    // 6. Start Carousel Auto-Scroll Engine & Hero Image Slider
     initContinuousCarousel();
+    initHeroSlider();
 
     // 7. Initial Job Card Update
     updateJobCard();
@@ -105,6 +106,85 @@ function initContinuousCarousel() {
             wrapper.scrollLeft = 0;
         }
     }, 28);
+}
+
+/**
+ * 2.1 E-COMMERCE HERO IMAGE SLIDER ENGINE (Noon/Amazon Style)
+ */
+let currentHeroSlideIndex = 0;
+let heroSlideTimer = null;
+
+function showHeroSlide(index) {
+    const slides = document.querySelectorAll('#ecommerceSlider .slider-item');
+    const dots = document.querySelectorAll('#bannerDots .dot');
+    if (!slides.length) return;
+
+    if (index >= slides.length) currentHeroSlideIndex = 0;
+    else if (index < 0) currentHeroSlideIndex = slides.length - 1;
+    else currentHeroSlideIndex = index;
+
+    slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === currentHeroSlideIndex);
+    });
+
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentHeroSlideIndex);
+    });
+
+    if (typeof feather !== 'undefined') feather.replace();
+}
+
+window.nextBannerSlide = function(e) { if(e) e.stopPropagation(); changeHeroSlide(1); };
+window.prevBannerSlide = function(e) { if(e) e.stopPropagation(); changeHeroSlide(-1); };
+window.setBannerSlide = function(index, e) { if(e) e.stopPropagation(); goToHeroSlide(index); };
+function changeHeroSlide(direction) {
+    showHeroSlide(currentHeroSlideIndex + direction);
+    restartHeroSliderTimer();
+}
+
+function goToHeroSlide(index) {
+    showHeroSlide(index);
+    restartHeroSliderTimer();
+}
+
+function startHeroSliderTimer() {
+    clearInterval(heroSlideTimer);
+    heroSlideTimer = setInterval(() => {
+        changeHeroSlide(1);
+    }, 4500);
+}
+
+function restartHeroSliderTimer() {
+    startHeroSliderTimer();
+}
+
+function initHeroSlider() {
+    const slider = document.getElementById('ecommerceSlider');
+    if (!slider) return;
+
+    startHeroSliderTimer();
+
+    slider.addEventListener('mouseenter', () => clearInterval(heroSlideTimer));
+    slider.addEventListener('mouseleave', startHeroSliderTimer);
+
+    // Touch swipe support for mobile devices
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        clearInterval(heroSlideTimer);
+    }, { passive: true });
+
+    slider.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        startHeroSliderTimer();
+        if (touchStartX - touchEndX > 45) {
+            changeHeroSlide(1);
+        } else if (touchEndX - touchStartX > 45) {
+            changeHeroSlide(-1);
+        }
+    }, { passive: true });
 }
 
 function scrollToBooking(event) {

@@ -7,18 +7,82 @@
     <title>EGS | Elite Garage - خدمة الصيانة المتنقلة الفورية (بنجيلك لحد بيتك)</title>
     <meta name="description" content="منصة EGS لصيانة السيارات المتنقلة الفورية. نصلك لباب بيتك أو مكان عملك بأحدث أجهزة الفحص وشفط الزيوت بدون أي فوضى في 6 أكتوبر والشيخ زايد.">
 
-    <!-- Fonts: Cairo & Alexandria (Premium Modern Arabic) & Outfit -->
+                        <!-- Fonts: Cairo & Alexandria (Premium Modern Arabic) & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
 
-    <!-- Custom CSS Design System -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Lenis Smooth Inertial Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Tailwind CSS (Built from src/input.css) -->
+    <link rel="stylesheet" href="{% static 'css/tailwind.out.css' %}?v=280.0">
 </head>
-<body>
+<body class="relative overflow-x-hidden">
+
+    <!-- BOSCH CAR SERVICE VERTICAL SIDE PYLONS (GUARANTEED 100% VISIBLE) -->
+    <aside class="bosch-pylon bosch-pylon-left hidden md:flex">
+        <div class="bosch-shield-wrapper">
+            <svg viewBox="0 0 300 320" class="bosch-shield-svg">
+                <rect x="0" y="0" width="300" height="28" fill="#002447" />
+                <path d="M 0,28 L 300,28 L 300,320 L 0,320 Z" fill="#002447" />
+                <path d="M 0,28 L 300,28 L 300,205 L 150,295 L 0,205 Z" fill="#FFFFFF" />
+                <text x="150" y="102" font-family="'Outfit', 'Helvetica', 'Arial', sans-serif" font-size="54" font-weight="900" fill="#E2001A" text-anchor="middle" letter-spacing="1">BOSCH</text>
+                <text x="150" y="168" font-family="'Outfit', 'Helvetica', 'Arial', sans-serif" font-size="46" font-weight="700" fill="#000000" text-anchor="middle">Service</text>
+                <g transform="translate(150, 238)">
+                    <circle cx="0" cy="0" r="32" fill="none" stroke="#000000" stroke-width="5"/>
+                    <circle cx="0" cy="0" r="24" fill="none" stroke="#000000" stroke-width="2"/>
+                    <rect x="-4" y="-20" width="8" height="40" fill="#000000" rx="2"/>
+                    <rect x="-20" y="-4" width="40" height="8" fill="#000000" rx="2"/>
+                    <circle cx="0" cy="0" r="10" fill="#FFFFFF" stroke="#000000" stroke-width="3"/>
+                </g>
+            </svg>
+        </div>
+        <div class="bosch-vertical-body">
+            <span class="bosch-v-text">BOSCH CAR SERVICE</span>
+            <div class="bosch-accent-line"></div>
+            <span class="bosch-ar-text">مركز صيانة معتمد</span>
+        </div>
+        <div class="bosch-pylon-footer">
+            <i data-feather="shield-check"></i>
+            <span>EGYPT</span>
+        </div>
+    </aside>
+
+    <aside class="bosch-pylon bosch-pylon-right hidden md:flex">
+        <div class="bosch-shield-wrapper">
+            <svg viewBox="0 0 300 320" class="bosch-shield-svg">
+                <rect x="0" y="0" width="300" height="28" fill="#002447" />
+                <path d="M 0,28 L 300,28 L 300,320 L 0,320 Z" fill="#002447" />
+                <path d="M 0,28 L 300,28 L 300,205 L 150,295 L 0,205 Z" fill="#FFFFFF" />
+                <text x="150" y="102" font-family="'Outfit', 'Helvetica', 'Arial', sans-serif" font-size="54" font-weight="900" fill="#E2001A" text-anchor="middle" letter-spacing="1">BOSCH</text>
+                <text x="150" y="168" font-family="'Outfit', 'Helvetica', 'Arial', sans-serif" font-size="46" font-weight="700" fill="#000000" text-anchor="middle">Service</text>
+                <g transform="translate(150, 238)">
+                    <circle cx="0" cy="0" r="32" fill="none" stroke="#000000" stroke-width="5"/>
+                    <circle cx="0" cy="0" r="24" fill="none" stroke="#000000" stroke-width="2"/>
+                    <rect x="-4" y="-20" width="8" height="40" fill="#000000" rx="2"/>
+                    <rect x="-20" y="-4" width="40" height="8" fill="#000000" rx="2"/>
+                    <circle cx="0" cy="0" r="10" fill="#FFFFFF" stroke="#000000" stroke-width="3"/>
+                </g>
+            </svg>
+        </div>
+        <div class="bosch-vertical-body">
+            <span class="bosch-v-text">BOSCH CAR SERVICE</span>
+            <div class="bosch-accent-line"></div>
+            <span class="bosch-ar-text">قطع غيار أصلية</span>
+        </div>
+        <div class="bosch-pylon-footer">
+            <i data-feather="check-circle"></i>
+            <span>فحص كمبيوتر</span>
+        </div>
+    </aside>
 
     <!-- 1. SPLASH SCREEN / EGS TELEMETRY LOADER -->
     <div class="splash-overlay" id="splashLoader">
@@ -70,12 +134,12 @@
                         <line x1="120" y1="102" x2="120" y2="28" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.95"/>
                         <circle cx="120" cy="105" r="4.5" fill="#0066FF" stroke="#FFFFFF" stroke-width="1.5"/>
                     </g>
-                    <g fill="#0B0B0E">
+                    <g fill="#FFFFFF">
                         <path d="M 57 104 L 63 71 L 93 71 L 91.6 77.5 L 70.8 77.5 L 69.4 83.5 L 88.5 83.5 L 87.1 89.8 L 68 89.8 L 66.5 97.5 L 90.5 97.5 L 89.1 104 Z"/>
                         <path d="M 136 71 L 109 71 C 100 71 95 76 93 84 C 91 93 94.5 104 104 104 L 127 104 C 134 104 137.5 99.5 138.5 94 L 139.5 87 L 117.5 87 L 116.3 93 L 126.5 93 L 125.4 97.5 C 124.8 98.8 122.5 99.2 119.5 99.2 L 107 99.2 C 102 99.2 99.5 95 100.5 89 C 101.5 83 105 76.5 112 76.5 L 134.8 76.5 Z"/>
                         <path d="M 178 71 L 150 71 C 143 71 139 74.8 138 79.5 C 137 85.5 141 89 148 90.8 L 159 93.8 C 164.5 95.2 165.8 97 165.2 99.2 C 164.2 102.5 160 104 153.5 104 L 137 104 L 138.5 98 L 145.5 98 C 149.5 98 153 98 154 96.5 C 154.8 95 153 94 147 92.5 L 137.5 90 C 131 88 129.5 83 130.5 78 C 132 72.8 137.5 71 146.5 71 L 178 71 Z"/>
                     </g>
-                    <text x="120" y="132" text-anchor="middle" font-family="'Outfit', 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="10.5px" letter-spacing="0.2px" fill="#0B0B0E">Elite Garage Service Center</text>
+                    <text x="120" y="132" text-anchor="middle" font-family="'Outfit', 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="10.5px" letter-spacing="0.2px" fill="#FFFFFF">Elite Garage Service Center</text>
                 </svg>
             </div>
             <div class="splash-brand">ELITE GARAGE SERVICE</div>
@@ -138,12 +202,12 @@
                             <line x1="120" y1="102" x2="120" y2="28" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.95"/>
                             <circle cx="120" cy="105" r="4.5" fill="#0066FF" stroke="#FFFFFF" stroke-width="1.5"/>
                         </g>
-                        <g fill="#0B0B0E">
+                        <g fill="#FFFFFF">
                             <path d="M 57 104 L 63 71 L 93 71 L 91.6 77.5 L 70.8 77.5 L 69.4 83.5 L 88.5 83.5 L 87.1 89.8 L 68 89.8 L 66.5 97.5 L 90.5 97.5 L 89.1 104 Z"/>
                             <path d="M 136 71 L 109 71 C 100 71 95 76 93 84 C 91 93 94.5 104 104 104 L 127 104 C 134 104 137.5 99.5 138.5 94 L 139.5 87 L 117.5 87 L 116.3 93 L 126.5 93 L 125.4 97.5 C 124.8 98.8 122.5 99.2 119.5 99.2 L 107 99.2 C 102 99.2 99.5 95 100.5 89 C 101.5 83 105 76.5 112 76.5 L 134.8 76.5 Z"/>
                             <path d="M 178 71 L 150 71 C 143 71 139 74.8 138 79.5 C 137 85.5 141 89 148 90.8 L 159 93.8 C 164.5 95.2 165.8 97 165.2 99.2 C 164.2 102.5 160 104 153.5 104 L 137 104 L 138.5 98 L 145.5 98 C 149.5 98 153 98 154 96.5 C 154.8 95 153 94 147 92.5 L 137.5 90 C 131 88 129.5 83 130.5 78 C 132 72.8 137.5 71 146.5 71 L 178 71 Z"/>
                         </g>
-                        <text x="120" y="132" text-anchor="middle" font-family="'Outfit', 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="10.5px" letter-spacing="0.2px" fill="#0B0B0E">Elite Garage Service Center</text>
+                        <text x="120" y="132" text-anchor="middle" font-family="'Outfit', 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="10.5px" letter-spacing="0.2px" fill="#FFFFFF">Elite Garage Service Center</text>
                     </svg>
                 </div>
             </a>
@@ -151,20 +215,20 @@
             <div class="header-meta">
                 <div class="status-indicator">
                     <span class="pulse-dot"></span>
-                    <span>عربات الصيانة متوفرة للطلب 🚚</span>
+                    <span>عربات الصيانة متوفرة للطلب</span>
                 </div>
                 
                 <!-- Auth Status Button -->
                 <div class="user-account-menu" id="authBtnGroup">
                     <button class="login-trigger-btn" id="authBtn" onclick="openLoginModal()">
-                        <i data-feather="user-check"></i>
+                        <i data-feather="user"></i>
                         <span id="authBtnText">تسجيل الدخول / حساب جديد</span>
                     </button>
                 </div>
 
                 <!-- Django Admin Dashboard Shortcut -->
-                <a href="/admin/" target="_blank" class="dashboard-nav-link" style="display:inline-flex; align-items:center; gap:6px; background:#F8FAFC; border:1px solid #E2E8F0; padding:8px 12px; border-radius:8px; font-size:12.5px; font-weight:700; color:#0F172A; text-decoration:none;" title="لوحة تحكم إدارة دجانجو">
-                    <i data-feather="shield" style="width:14px; height:14px; color:#10B981;"></i>
+                <a href="/admin/" target="_blank" class="dashboard-nav-link" title="لوحة تحكم إدارة دجانجو">
+                    <i data-feather="shield"></i>
                     <span>لوحة تحكم الأدمن</span>
                 </a>
 
@@ -180,8 +244,7 @@
     <section class="top-marques-bar">
         <div class="top-marques-container">
             <div class="top-marques-label">
-                <i data-feather="shield"></i>
-                <span>أجهزة وبرمجيات فحص متخصصة:</span>
+                <span>البرمجيات المعتمدة:</span>
             </div>
             <div class="top-marques-track">
                 <!-- Mercedes-Benz -->
@@ -275,120 +338,44 @@
 
     <!-- MAIN PORTAL CONTAINER -->
     <main class="main-layout" id="mainPortalLayout">
-        
-        <!-- LUXURY HERO PROMOTIONAL BANNER -->
-        <section class="hero-banner-section">
-            <div class="hero-grid-pattern"></div>
-            
-            <div class="hero-banner-content">
-                <!-- Text / Content Column -->
-                <div class="hero-text-col">
-                    <div class="hero-tag-badge">
-                        <span class="hero-badge-dot"></span>
-                        <span>👑 الخدمة الفاخرة الأولى في مصر | ورشة صيانة متنقلة</span>
-                    </div>
-
-                    <h2 class="hero-title">
-                        صيانة سيارتك الفاخرة عند باب بيتك.. <span class="highlight-cyan">بأحدث تقنيات الفحص الألمانية</span>
-                    </h2>
-
-                    <p class="hero-desc">
-                        لا داعي لانتظار مراكز الصيانة أو تضييع وقتك الثمين! شاحنات ورشة <strong>EGS</strong> المجهزة بالكامل تصلك في <strong>الشيخ زايد و6 أكتوبر</strong> بفنيين معتمدين وأجهزة فحص كمبيوتر وشفط الزيوت الهيدروليكية بدون قطرة زيت واحدة في موقعك.
-                    </p>
-
-                    <!-- 4 Trust & Feature Badges -->
-                    <div class="hero-features-grid">
-                        <div class="hero-feature-capsule">
-                            <div class="hero-feature-icon"><i data-feather="truck"></i></div>
-                            <div class="hero-feature-text">
-                                <span class="hero-feature-title">وصول فوري وسريع</span>
-                                <span class="hero-feature-sub">فني في موقعك خلال 45 دقيقة</span>
-                            </div>
-                        </div>
-                        <div class="hero-feature-capsule">
-                            <div class="hero-feature-icon"><i data-feather="shield"></i></div>
-                            <div class="hero-feature-text">
-                                <span class="hero-feature-title">ضمان ذهبي معتمد</span>
-                                <span class="hero-feature-sub">6 أشهر أو 10,000 كم</span>
-                            </div>
-                        </div>
-                        <div class="hero-feature-capsule">
-                            <div class="hero-feature-icon"><i data-feather="activity"></i></div>
-                            <div class="hero-feature-text">
-                                <span class="hero-feature-title">فحص شامل 35 نقطة</span>
-                                <span class="hero-feature-sub">تقرير رقمي مجاني مع كل باقة</span>
-                            </div>
-                        </div>
-                        <div class="hero-feature-capsule">
-                            <div class="hero-feature-icon"><i data-feather="zap"></i></div>
-                            <div class="hero-feature-text">
-                                <span class="hero-feature-title">خدمة نظيفة 100%</span>
-                                <span class="hero-feature-sub">شفط هيدروليكي بدون فوضى</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Call To Action Actions -->
-                    <div class="hero-actions-bar">
-                        <button type="button" class="hero-cta-btn" onclick="scrollToBooking(event)">
-                            <i data-feather="calendar"></i>
-                            <span>احجز صيانة سيارتك الآن</span>
-                        </button>
-
-                        <a href="tel:19900" class="hero-hotline-btn">
-                            <i data-feather="phone-call"></i>
-                            <span>19900 (الخط الساخن)</span>
-                        </a>
-
-                        <button type="button" class="hero-promo-badge" onclick="copyPromoCode('EGS15', this)" title="اضغط لنسخ كود الخصم">
-                            <i data-feather="tag"></i>
-                            <span>كود خصم 15%: <strong>EGS15</strong></span>
-                        </button>
-                    </div>
+        <div id="bookingAtelier" class="w-full">
+            <!-- ROLLS-ROYCE PINNED HERO STAGE -->
+            <section class="ecommerce-banner-slider" id="ecommerceSlider">
+            <div class="slider-wrapper">
+                <!-- Slide 1 -->
+                <div class="slider-item active" onclick="scrollToBooking(event)">
+                    <img src="{% static 'images/banner_mobile_service.jpg?v=6.0' %}" alt="ورشة الصيانة المتنقلة" class="slider-img" />
                 </div>
-
-                <!-- Visual Telemetry Hologram Card Column -->
-                <div class="hero-visual-col">
-                    <div class="hero-telemetry-panel">
-                        <div class="telemetry-header">
-                            <div class="telemetry-unit-title">
-                                <i data-feather="radio"></i>
-                                <span>EGS Mobile Unit #04</span>
-                            </div>
-                            <span class="telemetry-live-badge">
-                                <span class="pulse-dot"></span>
-                                <span>متاحة للطلب ⚡</span>
-                            </span>
-                        </div>
-
-                        <div class="telemetry-gauge-card">
-                            <div class="gauge-stats-info">
-                                <span class="gauge-label">مؤشر جودة وفحص المحرك</span>
-                                <span class="gauge-value tabular">99.8%</span>
-                                <span class="gauge-subtext">✓ معتمد بالمعايير الألمانية</span>
-                            </div>
-                            <!-- Mini Gauge Graphic -->
-                            <svg viewBox="0 0 80 80" width="64" height="64">
-                                <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/>
-                                <circle cx="40" cy="40" r="32" fill="none" stroke="#00D2FF" stroke-width="6" stroke-dasharray="180" stroke-dashoffset="30" stroke-linecap="round"/>
-                                <text x="40" y="45" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" font-weight="900" fill="#FFFFFF" text-anchor="middle">EGS</text>
-                            </svg>
-                        </div>
-
-                        <div class="telemetry-location-row">
-                            <i data-feather="navigation" class="telemetry-location-icon"></i>
-                            <span class="telemetry-location-text">نطاق التغطية: الشيخ زايد، 6 أكتوبر، والمناطق المجاورة</span>
-                        </div>
-
-                        <div class="telemetry-footer-bar">
-                            <span>⏱️ متوسط وقت الصيانة: 45 دقيقة</span>
-                            <span>🛡️ ضمان EGS الذهبي</span>
-                        </div>
-                    </div>
+                <!-- Slide 2 -->
+                <div class="slider-item" onclick="scrollToBooking(event)">
+                    <img src="{% static 'images/banner_promo_discount.jpg?v=6.0' %}" alt="خصم 15% على الصيانة" class="slider-img" />
+                </div>
+                <!-- Slide 3 -->
+                <div class="slider-item" onclick="scrollToBooking(event)">
+                    <img src="{% static 'images/banner_diagnostic_scan.jpg?v=6.0' %}" alt="فحص كمبيوتر ألماني مجاناً" class="slider-img" />
+                </div>
+                <!-- Slide 4 -->
+                <div class="slider-item" onclick="scrollToBooking(event)">
+                    <img src="{% static 'images/banner_warranty_speed.jpg?v=6.0' %}" alt="وصول في 45 دقيقة وضمان 6 أشهر" class="slider-img" />
                 </div>
             </div>
-        </section>
 
+            <!-- Arrows Controls (Feather Icons) -->
+            <button type="button" class="slider-nav-btn prev-btn" onclick="prevBannerSlide(event)" aria-label="السابق">
+                <i data-feather="chevron-right"></i>
+            </button>
+            <button type="button" class="slider-nav-btn next-btn" onclick="nextBannerSlide(event)" aria-label="التالي">
+                <i data-feather="chevron-left"></i>
+            </button>
+
+            <!-- Dots Pagination -->
+            <div class="slider-pagination" id="bannerDots">
+                <span class="dot active" onclick="setBannerSlide(0, event)"></span>
+                <span class="dot" onclick="setBannerSlide(1, event)"></span>
+                <span class="dot" onclick="setBannerSlide(2, event)"></span>
+                <span class="dot" onclick="setBannerSlide(3, event)"></span>
+            </div>
+        </section>
         <!-- INFINITE SMOOTH CIRCULAR CAROUSEL -->
         <section class="carousel-section">
             <div class="carousel-header">
@@ -440,7 +427,9 @@
                     <div class="notice-text">
                         <strong>نظام حسابات EGS:</strong> يلزم تسجيل الدخول أو إنشاء حساب جديد لتأكيد حجز سيارة الصيانة المتنقلة واستلام كارت العمل الرقمي.
                     </div>
-                    <button class="btn btn-secondary btn-sm" onclick="openLoginModal()">تسجيل الدخول الأن</button>
+                    <button class="btn btn-secondary btn-sm" onclick="openLoginModal()">
+                        تسجيل الدخول الأن
+                    </button>
                 </div>
 
                 <!-- Step Progress Tracker -->
@@ -525,9 +514,9 @@
                     <div class="step-actions">
                         <div></div>
                         <button class="btn btn-primary" onclick="goToNextStep(1)">
-                            <span>المتابعة لبيانات السيارة</span>
-                            <i data-feather="arrow-left"></i>
-                        </button>
+                        <span>المتابعة لبيانات السيارة</span>
+                                <i data-feather="arrow-left"></i>
+                    </button>
                     </div>
                 </section>
 
@@ -592,13 +581,13 @@
 
                     <div class="step-actions">
                         <button class="btn btn-secondary" onclick="navigateToStep(1)">
-                            <i data-feather="arrow-right"></i>
-                            <span>الرجوع</span>
-                        </button>
+                        <i data-feather="arrow-right"></i>
+                                <span>الرجوع</span>
+                    </button>
                         <button class="btn btn-primary" onclick="goToNextStep(2)">
-                            <span>المتابعة لاختيار الموعد</span>
-                            <i data-feather="arrow-left"></i>
-                        </button>
+                        <span>المتابعة لاختيار الموعد</span>
+                                <i data-feather="arrow-left"></i>
+                    </button>
                     </div>
                 </section>
 
@@ -688,13 +677,13 @@
 
                     <div class="step-actions">
                         <button class="btn btn-secondary" onclick="navigateToStep(2)">
-                            <i data-feather="arrow-right"></i>
-                            <span>الرجوع</span>
-                        </button>
+                        <i data-feather="arrow-right"></i>
+                                <span>الرجوع</span>
+                    </button>
                         <button class="btn btn-primary" onclick="goToNextStep(3)">
-                            <span>تأكيد البيانات النهائية</span>
-                            <i data-feather="arrow-left"></i>
-                        </button>
+                        <span>تأكيد البيانات النهائية</span>
+                                <i data-feather="arrow-left"></i>
+                    </button>
                     </div>
                 </section>
 
@@ -727,13 +716,13 @@
 
                     <div class="step-actions">
                         <button class="btn btn-secondary" onclick="navigateToStep(3)">
-                            <i data-feather="arrow-right"></i>
-                            <span>الرجوع</span>
-                        </button>
+                        <i data-feather="arrow-right"></i>
+                                <span>الرجوع</span>
+                    </button>
                         <button class="btn btn-go btn-large" onclick="submitBooking()">
-                            <i data-feather="check-circle"></i>
-                            <span>تأكيد الحجز وطباعة كارت العمل</span>
-                        </button>
+                        <i data-feather="check-circle"></i>
+                                <span>تأكيد الحجز وطباعة كارت العمل</span>
+                    </button>
                     </div>
                 </section>
 
@@ -772,9 +761,9 @@
                     <input type="password" id="loginUserPasswordInput" class="form-control" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">
-                    <i data-feather="log-in"></i>
-                    <span>تسجيل الدخول ومتابعة الحجز</span>
-                </button>
+                        <i data-feather="log-in"></i>
+                        <span>تسجيل الدخول ومتابعة الحجز</span>
+                    </button>
             </form>
 
             <!-- User Account Registration Form -->
@@ -794,9 +783,9 @@
                     <input type="password" id="regPasswordInput" class="form-control" placeholder="اختر كلمة سر قوية" required>
                 </div>
                 <button type="submit" class="btn btn-go btn-block">
-                    <i data-feather="check-circle"></i>
-                    <span>إنشاء الحساب ومتابعة الحجز</span>
-                </button>
+                        <i data-feather="check-circle"></i>
+                        <span>إنشاء الحساب ومتابعة الحجز</span>
+                    </button>
             </form>
         </div>
     </div>
@@ -845,7 +834,7 @@
                 <div class="modal-secondary-actions">
                     <button class="btn btn-primary" onclick="window.print()">
                         <i data-feather="printer"></i>
-                        <span>طباعة كارت العمل</span>
+                            <span>طباعة كارت العمل</span>
                     </button>
                     <button class="btn btn-secondary" onclick="closeModal()">
                         <span>إغلاق وتقديم حجز جديد</span>
@@ -857,9 +846,10 @@
 
     {% csrf_token %}
 
-    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/app.js' %}?v=280.0"></script>
     <script>
         feather.replace();
     </script>
+    <script src="{% static 'js/motion.js' %}?v=280.0"></script>
 </body>
 </html>

@@ -40,3 +40,5 @@ htmlcov/
 *.egg-info/
 dist/
 build/
+*.exe
+tailwindcss.exe

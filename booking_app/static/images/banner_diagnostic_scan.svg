@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="b3_bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050E1F"/>
+      <stop offset="50%" stop-color="#06283D"/>
+      <stop offset="85%" stop-color="#0066FF"/>
+      <stop offset="100%" stop-color="#00D2FF"/>
+    </linearGradient>
+    <linearGradient id="b3_cyan" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D2FF"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+    <filter id="b3_glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#00D2FF" flood-opacity="0.65"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="450" fill="url(#b3_bg)" rx="16"/>
+
+  <!-- Left Visual: Holographic Diagnostic Wireframe & Gauge -->
+  <g transform="translate(100, 50)">
+    <!-- Concentric Radar Circles -->
+    <circle cx="240" cy="170" r="140" fill="none" stroke="#00D2FF" stroke-width="1.5" opacity="0.3"/>
+    <circle cx="240" cy="170" r="100" fill="none" stroke="#00D2FF" stroke-width="2" stroke-dasharray="10,6" opacity="0.5"/>
+    <circle cx="240" cy="170" r="60" fill="none" stroke="#34D399" stroke-width="2" opacity="0.6"/>
+
+    <!-- High-Tech Gauge Arc -->
+    <path d="M 120 230 A 130 130 0 1 1 360 230" fill="none" stroke="#00D2FF" stroke-width="12" stroke-linecap="round" filter="url(#b3_glow)"/>
+    <text x="240" y="165" font-family="'Arial Black', sans-serif" font-size="44" font-weight="900" fill="#00D2FF" text-anchor="middle">99.8%</text>
+    <text x="240" y="195" font-family="'Cairo', sans-serif" font-size="14" font-weight="800" fill="#34D399" text-anchor="middle">حالة المحرك ممتازة</text>
+
+    <!-- Scan Points on Grid -->
+    <circle cx="160" cy="130" r="6" fill="#34D399"/>
+    <line x1="160" y1="130" x2="190" y2="100" stroke="#34D399" stroke-width="1.5"/>
+    <text x="195" y="105" font-family="'Cairo', sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">فحص الفرامل ✓</text>
+
+    <circle cx="320" cy="130" r="6" fill="#00D2FF"/>
+    <line x1="320" y1="130" x2="350" y2="100" stroke="#00D2FF" stroke-width="1.5"/>
+    <text x="355" y="105" font-family="'Cairo', sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">فحص التكييف ✓</text>
+
+    <circle cx="240" cy="270" r="6" fill="#00D2FF"/>
+    <text x="240" y="295" font-family="'Cairo', sans-serif" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle">35 نقطة فحص ديجيتال</text>
+  </g>
+
+  <!-- Right Typography -->
+  <g transform="translate(680, 75)" text-anchor="end">
+    <!-- Tag -->
+    <rect x="290" y="0" width="310" height="36" rx="18" fill="rgba(52, 211, 153, 0.2)" stroke="#34D399" stroke-width="1.5"/>
+    <circle cx="580" cy="18" r="5" fill="#34D399"/>
+    <text x="565" y="24" font-family="'Cairo', sans-serif" font-size="14" font-weight="800" fill="#34D399">⚡ فحص كمبيوتر ألماني مجاناً</text>
+
+    <!-- Main Headline -->
+    <text x="600" y="85" font-family="'Cairo', sans-serif" font-size="38" font-weight="900" fill="#FFFFFF">
+      فحص شامل <tspan fill="url(#b3_cyan)">35 نقطة حيوية</tspan> مع كل باقة
+    </text>
+
+    <!-- Subtitle -->
+    <text x="600" y="130" font-family="'Cairo', sans-serif" font-size="18" font-weight="600" fill="rgba(255, 255, 255, 0.9)">
+      تقرير رقمي مفصل يوضح حالة المحرك، الفرامل، السوائل، والتكييف
+    </text>
+    <text x="600" y="160" font-family="'Cairo', sans-serif" font-size="16" font-weight="500" fill="#A7F3D0">
+      ✓ أحدث أجهزة التشخيص الألمانية المعتمدة لكافة الماركات العالمية
+    </text>
+
+    <!-- Checklist Pill Group -->
+    <g transform="translate(180, 195)">
+      <rect x="280" y="0" width="140" height="34" rx="8" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.2)"/>
+      <text x="350" y="22" font-family="'Cairo', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🔍 كشف الأعطال</text>
+
+      <rect x="140" y="0" width="130" height="34" rx="8" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.2)"/>
+      <text x="205" y="22" font-family="'Cairo', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">❄️ فحص التكييف</text>
+
+      <rect x="0" y="0" width="130" height="34" rx="8" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.2)"/>
+      <text x="65" y="22" font-family="'Cairo', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🔋 فحص البطارية</text>
+    </g>
+
+    <!-- CTA Button Graphic -->
+    <g transform="translate(380, 255)">
+      <rect x="0" y="0" width="220" height="48" rx="12" fill="url(#b3_cyan)" filter="url(#b3_glow)"/>
+      <text x="110" y="30" font-family="'Cairo', sans-serif" font-size="16" font-weight="900" fill="#050E1F" text-anchor="middle">اطلب فحص شامل 📋</text>
+    </g>
+  </g>
+</svg>

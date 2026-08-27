@@ -1,0 +1,1030 @@
+/* ==========================================
+   EGS BESPOKE ATELIER — ROLLS-ROYCE LUXURY MOTION & AESTHETIC
+   Lenis Smooth Scroll + GSAP ScrollTrigger + Tailwind Architecture
+   ========================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================
+   LENIS SMOOTH SCROLL INTEGRATION RULES
+   ========================================== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ==========================================
+   BASE LAYER — Void Black & Rolls-Royce Typography
+   ========================================== */
+@layer base {
+  html, body {
+    @apply w-full max-w-full overflow-x-hidden antialiased;
+    background-color: #000000;
+    color: #FFFFFF;
+    font-family: 'Cairo', 'Alexandria', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    direction: rtl;
+    letter-spacing: -0.2px;
+  }
+}
+
+/* ==========================================
+   COMPONENTS LAYER — Editorial Luxury Architecture
+   ========================================== */
+@layer components {
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* --- 1. SPLASH SCREEN (Midnight Bespoke) --- */
+  .splash-overlay {
+    @apply fixed inset-0 z-[9999] flex items-center justify-center text-center text-white transition-all duration-700 ease-in-out;
+    background: radial-gradient(circle at center, #181818 0%, #000000 100%);
+  }
+  .splash-overlay.fade-out {
+    @apply opacity-0 invisible pointer-events-none;
+  }
+  .splash-content {
+    @apply w-[90%] max-w-[420px] p-8 flex flex-col items-center;
+  }
+  .splash-logo-card {
+    @apply w-[260px] bg-[#070D1A]/90 p-4 px-6 rounded-md mb-6 border border-white/10 animate-splash-pulse backdrop-blur-xl;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(30, 96, 255, 0.15);
+  }
+  .splash-brand {
+    @apply font-display text-[26px] font-light text-white mb-1.5 tracking-[0.2em] uppercase;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
+  }
+  .splash-sub {
+    @apply text-xs text-neutral-400 mb-6 font-light tracking-wide;
+  }
+  .splash-progress-track {
+    @apply w-full h-[3px] rounded-full overflow-hidden mb-3 border border-white/[0.06];
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+  .splash-progress-bar {
+    @apply w-0 h-full rounded-full transition-[width] duration-[100ms] ease-linear bg-[#1E60FF];
+    box-shadow: 0 0 16px #1E60FF;
+  }
+  .splash-counter {
+    @apply font-display text-sm font-light tracking-widest text-[#3B82F6] mt-2;
+  }
+
+  /* --- 2. HEADER BAR (Sleek Dark Obsidian & Charcoal Wave) --- */
+  .app-header {
+    @apply sticky top-0 z-[100] w-full py-3.5 px-8 text-white border-b transition-all duration-500;
+    background: linear-gradient(135deg, rgba(5, 5, 5, 0.96) 0%, rgba(22, 22, 22, 0.96) 50%, rgba(8, 8, 8, 0.96) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.95);
+  }
+  .header-container {
+    @apply max-w-7xl mx-auto flex justify-between items-center gap-6;
+  }
+  .brand-logo {
+    @apply inline-flex items-center no-underline cursor-pointer transition-opacity duration-300;
+  }
+  .brand-logo:hover {
+    @apply opacity-80;
+  }
+  .egs-logo-badge {
+    @apply bg-transparent p-0 flex items-center justify-center border-none;
+  }
+  .egs-needle-group {
+    transform-box: view-box;
+    transform-origin: 120px 105px;
+    @apply animate-rev-needle;
+  }
+  .header-meta {
+    @apply flex items-center gap-4;
+  }
+  .status-indicator {
+    @apply flex items-center gap-2 text-xs text-neutral-300 border py-1.5 px-4 rounded-full font-light tracking-wide;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .pulse-dot {
+    @apply w-[6px] h-[6px] bg-[#1E60FF] rounded-full animate-pulse-dot;
+    box-shadow: 0 0 10px #1E60FF;
+  }
+  .login-trigger-btn {
+    @apply relative overflow-hidden text-white border-0 py-2 px-5 rounded-full font-body text-xs font-light tracking-wider cursor-pointer flex items-center gap-2 whitespace-nowrap transition-all duration-300;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  .login-trigger-btn:hover {
+    @apply bg-white/15 text-white;
+  }
+  .user-logged-in-btn {
+    @apply relative overflow-hidden text-white border-0 py-2 px-5 rounded-full text-xs font-medium flex items-center gap-2 cursor-pointer whitespace-nowrap transition-all duration-300;
+    background-color: rgba(30, 96, 255, 0.18);
+  }
+  .hotline-btn {
+    @apply relative overflow-hidden flex items-center gap-2 text-white no-underline font-display text-xs font-medium border-0 py-2 px-5 rounded-full transition-all duration-300 tracking-wider;
+    background-color: rgba(30, 96, 255, 0.18);
+  }
+  .hotline-btn:hover {
+    @apply bg-[#1E60FF] text-white;
+    box-shadow: 0 0 20px rgba(30, 96, 255, 0.35);
+  }
+  .dashboard-nav-link {
+    @apply relative overflow-hidden inline-flex items-center gap-2 border-0 py-2 px-4 rounded-full text-xs font-light text-neutral-300 no-underline transition-all duration-300;
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+  .dashboard-nav-link:hover {
+    @apply text-white bg-white/10;
+  }
+
+  /* --- 2.1 TOP MARQUES STRIP --- */
+  .top-marques-bar {
+    @apply w-full border-b relative z-[90] py-1;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, rgba(15, 15, 15, 0.98) 100%);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .top-marques-container {
+    @apply max-w-7xl mx-auto py-3 px-8 flex items-center justify-between gap-6;
+  }
+  .top-marques-label {
+    @apply flex items-center gap-2 text-xs font-light text-neutral-400 whitespace-nowrap shrink-0 tracking-[0.2em] uppercase;
+  }
+  .top-marques-label i {
+    @apply w-[14px] h-[14px] text-[#3B82F6];
+  }
+  .top-marques-track {
+    @apply flex items-center gap-3 overflow-x-auto py-1 scrollbar-none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .marque-item {
+    @apply border rounded-sm py-1.5 px-4 flex items-center gap-2.5 cursor-default select-none whitespace-nowrap text-neutral-300 shrink-0 transition-all duration-300;
+    background-color: rgba(16, 16, 16, 0.6);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .marque-item:hover {
+    @apply border-white/20 text-white bg-white/[0.04];
+  }
+  .marque-item .marque-svg {
+    @apply w-4 h-4 block opacity-80;
+  }
+  .marque-item span {
+    @apply text-xs font-light tracking-wider font-outfit;
+  }
+
+  /* --- 3. HERO STAGE & PINNING SHOWCASE --- */
+  .hero-pin-stage {
+    @apply w-full relative overflow-hidden py-8;
+  }
+  .ecommerce-banner-slider {
+    @apply relative w-full rounded-md overflow-hidden select-none cursor-pointer border max-w-7xl mx-auto;
+    aspect-ratio: 1400 / 450;
+    min-height: 240px;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  .slider-wrapper {
+    @apply relative w-full h-full;
+  }
+  .slider-item {
+    @apply absolute inset-0 opacity-0 invisible z-[1] transition-all duration-700 ease-in-out;
+  }
+  .slider-item.active {
+    @apply opacity-100 visible z-[2];
+  }
+  .slider-img {
+    @apply w-full h-full block object-cover transition-transform duration-1000;
+  }
+  .slider-nav-btn {
+    @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 text-white flex items-center justify-center cursor-pointer z-10 backdrop-blur-xl transition-all duration-300;
+    background: rgba(3, 7, 18, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  }
+  .slider-nav-btn:hover {
+    @apply bg-white text-black border-white scale-105;
+  }
+  .slider-nav-btn.prev-btn {
+    @apply right-6;
+  }
+  .slider-nav-btn.next-btn {
+    @apply left-6;
+  }
+  .slider-pagination {
+    @apply absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-10 backdrop-blur-xl py-2 px-4 rounded-full border border-white/10;
+    background: rgba(3, 7, 18, 0.65);
+  }
+  .slider-pagination .dot {
+    @apply w-2 h-2 rounded-full cursor-pointer transition-all duration-300;
+    background: rgba(255, 255, 255, 0.25);
+  }
+  .slider-pagination .dot:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+  .slider-pagination .dot.active {
+    @apply w-7 rounded-full bg-white;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+  }
+
+  /* --- 4. LUXURY SECTIONS WITH HEAVY NEGATIVE SPACE --- */
+  .luxury-section {
+    @apply py-28 md:py-36 max-w-7xl mx-auto px-6 md:px-8 w-full;
+  }
+  .luxury-heading-block {
+    @apply mb-16 md:mb-20 text-center md:text-right;
+  }
+  .luxury-kicker {
+    @apply text-xs font-light text-neutral-400 tracking-[0.25em] uppercase mb-3 block;
+  }
+  .luxury-title {
+    @apply font-display text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight tracking-[0.05em];
+  }
+  .luxury-subtitle {
+    @apply text-sm md:text-base text-neutral-400 font-light mt-4 max-w-2xl leading-relaxed;
+  }
+
+  /* --- 5. BEST SELLERS CAROUSEL (Bespoke Atelier Cards) --- */
+  .carousel-section {
+    @apply border rounded-md p-8 mb-24 max-w-7xl mx-auto;
+    background-color: rgba(12, 12, 12, 0.7);
+    backdrop-filter: blur(20px);
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  }
+  .carousel-header {
+    @apply flex justify-between items-center mb-8 border-b pb-4;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .sec-title {
+    @apply font-display text-2xl font-light text-white tracking-wide flex items-center gap-3;
+  }
+  .sec-title i {
+    @apply text-[#3B82F6];
+  }
+  .carousel-track-wrapper {
+    @apply overflow-x-auto w-full py-2 scrollbar-none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .carousel-track {
+    @apply flex gap-6 w-max;
+  }
+  .carousel-card {
+    @apply flex-[0_0_280px] border rounded-sm p-6 cursor-pointer transition-all duration-300 relative flex flex-col;
+    background-color: rgba(16, 16, 16, 0.75);
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+  .carousel-card:hover {
+    @apply -translate-y-2 border-white/30 bg-white/[0.03];
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(30, 96, 255, 0.15);
+  }
+  .carousel-badge {
+    @apply absolute top-3 left-3 text-white font-display text-[9px] font-medium py-1 px-2.5 rounded-sm uppercase tracking-[0.15em];
+    background: #1E60FF;
+    box-shadow: 0 2px 10px rgba(30, 96, 255, 0.4);
+  }
+  .carousel-icon {
+    @apply w-10 h-10 rounded-sm flex items-center justify-center mb-4 text-white;
+    background-color: rgba(30, 96, 255, 0.2);
+  }
+  .carousel-title {
+    @apply font-display text-lg font-normal text-white mb-2 tracking-wide;
+  }
+  .carousel-desc {
+    @apply text-xs text-neutral-400 mb-4 leading-loose grow font-light;
+  }
+  .carousel-footer {
+    @apply flex justify-between items-center border-t pt-3;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .carousel-duration {
+    @apply text-xs text-neutral-400 font-light;
+  }
+  .carousel-price {
+    @apply font-display text-xl font-light text-white tracking-wider;
+  }
+
+  /* --- 6. CATEGORY TABS --- */
+  .category-tabs {
+    @apply flex gap-3 overflow-x-auto pb-4 mb-10 border-b scrollbar-none;
+    border-color: rgba(255, 255, 255, 0.06);
+    -webkit-overflow-scrolling: touch;
+  }
+  .cat-pill {
+    @apply relative overflow-hidden py-2.5 px-6 border-0 rounded-full font-body text-xs font-light text-neutral-400 cursor-pointer whitespace-nowrap flex items-center gap-2 shrink-0 transition-all duration-300 tracking-[0.18em] uppercase select-none;
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  .cat-pill:hover {
+    @apply text-white bg-white/[0.08];
+  }
+  .cat-pill.active {
+    @apply text-black bg-white font-normal;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.35);
+  }
+
+  /* --- 7. BOOKING ATELIER CONCIERGE & STEPPER --- */
+  .stepper-bar {
+    @apply border rounded-md py-6 px-8 mb-12 relative;
+    background-color: rgba(12, 12, 12, 0.75);
+    backdrop-filter: blur(20px);
+    border-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  }
+  .stepper-track {
+    @apply absolute top-[44px] left-12 right-12 h-[1px] z-[1];
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+  .stepper-fill {
+    @apply h-full w-0 bg-[#1E60FF] transition-[width] duration-500 ease-in-out;
+    box-shadow: 0 0 12px #1E60FF;
+  }
+  .steps-grid {
+    @apply grid grid-cols-4 relative z-[2] text-center;
+  }
+  .step-item {
+    @apply flex flex-col items-center cursor-pointer;
+  }
+  .step-node {
+    @apply w-9 h-9 rounded-full border text-neutral-400 font-light flex items-center justify-center text-xs mb-2 transition-all duration-300;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  .step-item.active .step-node {
+    @apply text-white bg-[#1E60FF] border-[#1E60FF] font-medium;
+    box-shadow: 0 0 20px rgba(30, 96, 255, 0.7);
+  }
+  .step-item.completed .step-node {
+    @apply bg-[#0A162B] border-white/30 text-white;
+  }
+  .step-label {
+    @apply text-xs font-light text-neutral-400 whitespace-nowrap tracking-wider;
+  }
+
+  .step-pane {
+    @apply hidden border rounded-md p-8 md:p-10;
+    background-color: rgba(12, 12, 12, 0.8);
+    backdrop-filter: blur(24px);
+    border-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  }
+  .step-pane.active {
+    @apply block;
+  }
+  .pane-header {
+    @apply mb-8 border-b pb-5;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .pane-header h2 {
+    @apply font-display text-2xl font-light text-white tracking-wide;
+  }
+  .pane-header p {
+    @apply text-neutral-400 text-sm font-light mt-1;
+  }
+
+  /* --- 8. SERVICE CARDS --- */
+  .services-grid {
+    @apply grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 mb-8;
+  }
+  .service-card {
+    @apply border rounded-sm p-6 cursor-pointer transition-all duration-300 relative flex flex-col;
+    background-color: rgba(16, 16, 16, 0.7);
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+  .service-card:hover {
+    @apply -translate-y-1.5 border-white/25 bg-white/[0.03];
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  }
+  .service-card.selected {
+    @apply border-white bg-white/[0.04];
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 0 1px #FFFFFF;
+  }
+  .popular-tag {
+    @apply absolute -top-3 left-4 text-white font-display text-[9px] font-medium py-1 px-3 rounded-sm uppercase tracking-[0.2em];
+    background: #1E60FF;
+    box-shadow: 0 2px 12px rgba(30, 96, 255, 0.5);
+  }
+  .service-head {
+    @apply flex justify-between items-center mb-4;
+  }
+  .service-icon {
+    @apply w-10 h-10 rounded-sm flex items-center justify-center text-white;
+    background-color: rgba(30, 96, 255, 0.2);
+  }
+  .service-price-block {
+    @apply flex items-baseline gap-1;
+  }
+  .service-price-block .currency {
+    @apply text-xs text-neutral-400 font-light;
+  }
+  .service-price-block .amount {
+    @apply font-display text-3xl font-light text-white tracking-wider;
+  }
+  .service-title {
+    @apply font-display text-xl font-normal text-white mb-2 tracking-wide;
+  }
+  .service-desc {
+    @apply text-xs text-neutral-400 mb-4 leading-loose grow font-light;
+  }
+  .duration-badge {
+    @apply text-xs text-neutral-300 py-1 px-3 rounded-sm inline-flex items-center gap-1.5 border;
+    background-color: rgba(8, 8, 8, 0.7);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .features-list {
+    @apply list-none border-t pt-4 mt-3;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .features-list li {
+    @apply text-xs text-neutral-300 flex items-center gap-2 mb-2 font-light;
+  }
+  .features-list li i {
+    @apply w-3.5 h-3.5 text-[#3B82F6];
+  }
+
+  /* --- 9. FORMS & INPUTS --- */
+  .form-card {
+    @apply border rounded-sm p-6 md:p-8 mb-8;
+    background-color: rgba(16, 16, 16, 0.65);
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+  .form-row {
+    @apply grid grid-cols-2 gap-6 mb-5;
+  }
+  .form-group {
+    @apply flex flex-col gap-2;
+  }
+  .form-group label {
+    @apply text-xs font-light tracking-wider uppercase text-neutral-300 flex items-center gap-2;
+  }
+  .form-control {
+    @apply w-full py-3.5 px-4 min-h-[48px] border rounded-sm font-body text-sm text-white outline-none transition-all duration-300;
+    background-color: rgba(8, 8, 8, 0.85);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .form-control:focus {
+    @apply border-white ring-1 ring-white/30;
+  }
+  .form-control option {
+    @apply bg-[#0B1220] text-white;
+  }
+
+  /* --- 10. LOCATION & TIME SLOTS --- */
+  .location-card {
+    @apply border rounded-sm p-6 mb-8;
+    background-color: rgba(16, 16, 16, 0.65);
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+  .gps-action-row {
+    @apply mt-3 flex flex-col gap-2;
+  }
+  .btn-gps-locate {
+    @apply relative overflow-hidden inline-flex items-center justify-center gap-2 text-white border-0 py-2.5 px-6 rounded-full font-body text-xs tracking-wider uppercase font-light cursor-pointer transition-all duration-300 select-none;
+    background-color: rgba(30, 96, 255, 0.15);
+  }
+  .btn-gps-locate:hover {
+    @apply bg-[#1E60FF] text-white;
+    box-shadow: 0 0 20px rgba(30, 96, 255, 0.35);
+  }
+  .btn-gps-locate.gps-success {
+    @apply !bg-white !text-black !border-white;
+  }
+  .gps-hint {
+    @apply text-xs text-neutral-400 font-light;
+  }
+  .date-strip-wrapper {
+    @apply mb-8;
+  }
+  .strip-label {
+    @apply font-light text-xs tracking-widest uppercase mb-3 flex items-center gap-2 text-neutral-300;
+  }
+  .date-strip {
+    @apply flex gap-3 overflow-x-auto pb-2;
+    -webkit-overflow-scrolling: touch;
+  }
+  .date-chip {
+    @apply flex-[0_0_95px] border rounded-sm py-3 px-2 text-center cursor-pointer flex flex-col gap-1 shrink-0 transition-all duration-300 text-neutral-300;
+    background-color: rgba(8, 8, 8, 0.85);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .date-chip:hover {
+    @apply border-white/30 text-white;
+  }
+  .date-chip.selected {
+    @apply border-white bg-white text-black font-medium;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+  }
+  .date-chip .day-name {
+    @apply text-xs font-light;
+  }
+  .date-chip .date-num {
+    @apply font-display text-xl font-light text-inherit;
+  }
+  .slots-container {
+    @apply flex flex-col gap-6 mb-8;
+  }
+  .slot-group {
+    @apply border rounded-sm p-5;
+    background-color: rgba(8, 8, 8, 0.7);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .group-header {
+    @apply flex items-center gap-2 text-xs tracking-widest uppercase font-light text-neutral-300 mb-3 pb-2 border-b;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .slots-grid {
+    @apply grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2.5;
+  }
+  .slot-pill {
+    @apply py-2.5 min-h-[46px] border rounded-sm text-center font-body text-xs font-light cursor-pointer flex flex-col items-center justify-center transition-all duration-300 text-neutral-300;
+    background-color: rgba(16, 16, 16, 0.75);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .slot-pill:hover {
+    @apply border-white/40 text-white;
+  }
+  .slot-pill.selected {
+    @apply bg-white border-white text-black font-medium;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  }
+  .slot-pill.disabled {
+    @apply opacity-25 cursor-not-allowed;
+  }
+
+  /* --- 11. EDITORIAL LUXURY BUTTONS --- */
+  .step-actions {
+    @apply flex justify-between items-center mt-8 pt-6 border-t gap-4;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .btn {
+    @apply relative overflow-hidden inline-flex items-center justify-center gap-3 py-3.5 px-8 min-h-[48px] rounded-full font-body text-xs font-light tracking-[0.2em] uppercase cursor-pointer whitespace-nowrap transition-all duration-300 select-none border-0;
+  }
+
+  /* --- ANIMATED UNDERLINE ON HOVER (NO BORDER BOX) --- */
+  .btn::after,
+  .login-trigger-btn::after,
+  .hotline-btn::after,
+  .dashboard-nav-link::after,
+  .cat-pill::after,
+  .btn-gps-locate::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: #1E60FF;
+    border-radius: 9999px;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    box-shadow: 0 0 8px #1E60FF;
+  }
+
+  .btn:hover::after,
+  .login-trigger-btn:hover::after,
+  .hotline-btn:hover::after,
+  .dashboard-nav-link:hover::after,
+  .cat-pill:hover::after,
+  .btn-gps-locate:hover::after {
+    transform: scaleX(1);
+  }
+
+  .cat-pill.active::after {
+    transform: scaleX(1);
+    background: #1E60FF;
+  }
+
+  .btn-primary {
+    @apply text-white border-0;
+    background: linear-gradient(135deg, #1E60FF 0%, #1048CC 100%);
+    box-shadow: 0 4px 20px rgba(30, 96, 255, 0.35);
+  }
+  .btn-primary::after {
+    background: #FFFFFF;
+    box-shadow: 0 0 8px #FFFFFF;
+  }
+  .btn-primary:hover {
+    @apply -translate-y-0.5;
+    background: linear-gradient(135deg, #2D6EFF 0%, #1E60FF 100%);
+    box-shadow: 0 8px 30px rgba(30, 96, 255, 0.5);
+  }
+
+  .btn-secondary {
+    @apply text-neutral-200 border-0;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+  }
+  .btn-secondary:hover {
+    @apply bg-white/10 text-white -translate-y-0.5;
+  }
+
+  .btn-go {
+    @apply text-black bg-white border-0 font-normal;
+    box-shadow: 0 4px 25px rgba(255, 255, 255, 0.35);
+  }
+  .btn-go::after {
+    background: #1E60FF;
+    box-shadow: 0 0 8px #1E60FF;
+  }
+  .btn-go:hover {
+    @apply bg-neutral-100 -translate-y-0.5;
+    box-shadow: 0 8px 35px rgba(255, 255, 255, 0.55);
+  }
+
+  .btn-large {
+    @apply py-4 px-10 text-xs tracking-[0.22em];
+  }
+  .btn-block {
+    @apply w-full justify-center;
+  }
+  .btn-sm {
+    @apply py-2 px-5 text-[11px] min-h-0 tracking-[0.15em];
+  }
+  .terms-box {
+    @apply flex gap-4 border rounded-sm py-4 px-6 text-xs font-light text-neutral-300 leading-relaxed;
+    background-color: rgba(16, 16, 16, 0.65);
+    border-color: rgba(30, 96, 255, 0.25);
+  }
+  .terms-icon {
+    @apply text-[#3B82F6];
+  }
+
+  /* --- 12. TRUST STRIP --- */
+  .trust-strip {
+    @apply border rounded-md py-6 px-8 mt-12 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-6;
+    background-color: rgba(12, 12, 12, 0.7);
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+  .trust-item {
+    @apply flex items-center gap-3.5;
+  }
+  .trust-icon {
+    @apply w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-white;
+    background-color: rgba(30, 96, 255, 0.15);
+  }
+  .trust-body h4 {
+    @apply text-sm font-light text-white tracking-wide;
+  }
+  .trust-body p {
+    @apply text-xs text-neutral-400 font-light mt-0.5;
+  }
+  .trust-divider {
+    @apply w-px h-10;
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  /* --- 13. JOB CARD SIDEBAR --- */
+  .job-card {
+    @apply border rounded-md p-6 sticky top-[100px];
+    background-color: rgba(12, 12, 12, 0.8);
+    backdrop-filter: blur(24px);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  }
+  .job-card-header {
+    @apply flex justify-between items-center mb-4;
+  }
+  .job-ticket-badge {
+    @apply inline-flex items-center gap-1.5 text-white text-[10px] font-light tracking-widest uppercase py-1 px-2.5 rounded-sm border;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .dot-live {
+    @apply w-1.5 h-1.5 bg-[#3B82F6] rounded-full;
+  }
+  .job-ticket-id {
+    @apply font-display text-lg font-light text-white tracking-wider;
+  }
+  .account-status-pill {
+    @apply text-xs border py-1.5 px-3 rounded-sm mb-4 flex items-center gap-2 text-neutral-300 font-light;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .account-status-pill.authenticated {
+    @apply text-white border-white/20 bg-white/[0.05];
+  }
+  .job-card-status {
+    @apply flex flex-col gap-2 mb-4 p-3 rounded-sm border;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+  .status-step-row {
+    @apply flex items-center gap-2 text-xs text-neutral-400 font-light;
+  }
+  .chk-icon {
+    @apply w-4 h-4 rounded-full flex items-center justify-center text-[9px] text-transparent;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .chk-icon i {
+    @apply w-2.5 h-2.5;
+  }
+  .status-step-row.completed {
+    @apply text-white;
+  }
+  .status-step-row.completed .chk-icon {
+    @apply bg-white text-black;
+  }
+  .card-divider {
+    @apply border-none border-t my-4;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .job-card-section {
+    @apply mb-3;
+  }
+  .sec-label {
+    @apply text-[10px] font-light uppercase text-neutral-400 mb-1 tracking-[0.18em];
+  }
+  .sec-val {
+    @apply text-sm font-light text-white tracking-wide;
+  }
+  .sec-val.service-name-val {
+    @apply text-white font-normal text-base;
+  }
+  .sec-sub {
+    @apply text-xs text-neutral-400 flex items-center gap-1 font-light;
+  }
+  .job-card-footer {
+    @apply p-4 rounded-sm mt-3 text-center border;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .total-label {
+    @apply text-[10px] text-neutral-400 mb-1 uppercase tracking-[0.2em] font-light;
+  }
+  .amber-price-display {
+    @apply flex items-baseline justify-center gap-1.5;
+  }
+  .amber-currency {
+    @apply text-sm text-neutral-400 font-light;
+  }
+  .amber-amount {
+    @apply font-display text-4xl font-light text-white leading-none tracking-wider;
+  }
+  .price-note {
+    @apply text-2xs text-neutral-500 mt-1 font-light;
+  }
+
+  /* --- 14. MODALS (Full Dark Monolith) --- */
+  .modal-overlay {
+    @apply hidden fixed inset-0 z-[1000] items-center justify-center p-6;
+    background-color: rgba(0, 0, 0, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .modal-overlay.active {
+    @apply flex;
+  }
+  .modal-card {
+    @apply border rounded-md max-w-modal w-[92%] p-8 md:p-10 text-center;
+    background-color: #0A0A0A;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.95);
+  }
+  .login-modal-card {
+    @apply relative text-right max-w-modal-sm w-[92%] p-8;
+  }
+  .modal-close-btn {
+    @apply absolute top-4 left-4 bg-transparent border-none text-neutral-400 cursor-pointer hover:text-white;
+  }
+  .login-toggle-tabs {
+    @apply flex border rounded-sm p-[3px] mb-6;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .toggle-tab {
+    @apply flex-1 py-2.5 px-2 border-none bg-transparent font-body text-xs font-light text-neutral-400 cursor-pointer rounded-sm flex items-center justify-center gap-1.5 tracking-wider uppercase;
+  }
+  .toggle-tab.active {
+    @apply bg-white text-black font-medium;
+  }
+  .login-form {
+    @apply hidden;
+  }
+  .login-form.active {
+    @apply block;
+  }
+  .login-heading {
+    @apply font-display text-2xl font-light text-white mb-1.5 tracking-wide;
+  }
+  .login-subtext {
+    @apply text-xs text-neutral-400 mb-6 font-light;
+  }
+  .modal-icon-success {
+    @apply w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-black bg-white;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+  }
+  .modal-title {
+    @apply font-display text-2xl font-light text-white mb-2 tracking-wide;
+  }
+  .modal-desc {
+    @apply text-xs text-neutral-400 mb-4 font-light leading-relaxed;
+  }
+  .ticket-display-box {
+    @apply border-2 border-dashed font-display text-2xl font-light text-white p-3 rounded-sm mb-5 tracking-widest;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .receipt-summary {
+    @apply border rounded-sm p-4 text-xs text-right mb-5 leading-loose text-neutral-300 font-light;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* --- INSTAPAY --- */
+  .instapay-box {
+    @apply border rounded-sm p-4 mb-5 text-right;
+    background-color: #000000;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  .instapay-head {
+    @apply flex items-center gap-2 mb-3 text-xs tracking-wider uppercase font-light text-white;
+  }
+  .instapay-pill {
+    @apply text-black font-outfit font-medium text-[9px] py-0.5 px-2 rounded-sm tracking-widest uppercase bg-white;
+  }
+  .instapay-details {
+    @apply flex flex-col gap-2;
+  }
+  .instapay-row {
+    @apply flex justify-between items-center border py-2 px-3 rounded-sm text-xs text-white;
+    background-color: #0A0A0A;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  .instapay-label {
+    @apply text-neutral-400 text-xs font-light;
+  }
+  .instapay-val {
+    @apply text-white text-sm font-normal tracking-wide;
+  }
+  .btn-copy-mini {
+    @apply text-white py-1 px-3 rounded-sm text-[10px] font-light tracking-wider uppercase cursor-pointer transition-all duration-300 border;
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  .btn-copy-mini:hover {
+    @apply bg-white text-black;
+  }
+  .btn-copy-mini.copied {
+    @apply !bg-white !text-black;
+  }
+  .instapay-note {
+    @apply flex items-center gap-2 text-xs text-neutral-400 mt-2 leading-relaxed font-light;
+  }
+  .instapay-note i {
+    @apply w-3.5 h-3.5 shrink-0 text-white;
+  }
+  .btn-whatsapp {
+    @apply text-white font-medium border-none transition-all duration-300 tracking-wider;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+  }
+  .btn-whatsapp:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+  }
+  .btn-whatsapp i {
+    @apply w-4 h-4;
+  }
+  .modal-actions {
+    @apply flex flex-col gap-3;
+  }
+  .modal-secondary-actions {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  .loading-placeholder {
+    @apply text-center py-12 text-neutral-400 text-sm font-light tracking-wider;
+  }
+
+  /* --- BOSCH CAR SERVICE VERTICAL SIDE PYLONS --- */
+  .bosch-pylon {
+    @apply absolute top-[180px] z-[50] w-[90px] h-[380px] py-4 px-2.5 rounded-2xl border transition-[border-color,box-shadow,transform] duration-500 select-none overflow-hidden flex flex-col items-center justify-between gap-3;
+    background: linear-gradient(180deg, rgba(0, 36, 71, 0.96) 0%, rgba(6, 14, 32, 0.96) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-color: rgba(30, 96, 255, 0.45);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 35px rgba(30, 96, 255, 0.4);
+    will-change: height;
+  }
+  .bosch-pylon:hover {
+    @apply border-[#1E60FF] -translate-y-0.5;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 1), 0 0 50px rgba(30, 96, 255, 0.65);
+  }
+  .bosch-pylon-left {
+    left: 0.75rem;
+  }
+  .bosch-pylon-right {
+    right: 0.75rem;
+  }
+
+  @media (min-width: 1400px) {
+    .bosch-pylon-left { left: 1.5rem; }
+    .bosch-pylon-right { right: 1.5rem; }
+  }
+
+  @media (min-width: 1650px) {
+    .bosch-pylon-left { left: 2.5rem; }
+    .bosch-pylon-right { right: 2.5rem; }
+  }
+
+  .bosch-shield-wrapper {
+    @apply w-full flex justify-center drop-shadow-xl transition-transform duration-500;
+  }
+  .bosch-pylon:hover .bosch-shield-wrapper {
+    transform: scale(1.06);
+  }
+  .bosch-shield-svg {
+    @apply w-full h-auto rounded-lg overflow-hidden;
+  }
+
+  .bosch-vertical-body {
+    @apply flex flex-col items-center justify-center my-auto py-2 w-full text-center gap-4;
+  }
+  .bosch-v-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    @apply font-display text-[11px] font-medium tracking-[0.45em] text-[#3B82F6] uppercase whitespace-nowrap opacity-100;
+  }
+  .bosch-accent-line {
+    @apply w-[2.5px] h-10 rounded-full my-2;
+    background: linear-gradient(180deg, #E2001A 0%, #1E60FF 100%);
+    box-shadow: 0 0 15px rgba(30, 96, 255, 0.9);
+    will-change: height;
+  }
+  .bosch-ar-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    @apply text-[12px] font-light tracking-[0.35em] text-neutral-200 whitespace-nowrap opacity-90;
+  }
+
+  .bosch-pylon-footer {
+    @apply flex flex-col items-center text-center gap-2 pt-4 border-t border-white/[0.12] w-full text-[10px] text-neutral-300 font-light tracking-wider mt-auto;
+  }
+  .bosch-pylon-footer i {
+    @apply w-4 h-4 text-[#3B82F6];
+  }
+}
+
+/* ==========================================
+   RESPONSIVE OVERRIDES
+   ========================================== */
+@layer components {
+  @media (max-width: 768px) {
+    .app-header { @apply py-3 px-4; }
+    .status-indicator, .brand-sub { @apply hidden; }
+    .hotline-btn span { @apply hidden; }
+    .top-marques-container { @apply px-4 flex-col items-start gap-2; }
+    .top-marques-track { @apply w-full; }
+    .trust-strip { @apply grid-cols-1; }
+    .trust-divider { @apply hidden; }
+    .luxury-section { @apply py-16 px-4; }
+  }
+  @media (max-width: 640px) {
+    .services-grid { @apply grid-cols-1; }
+    .form-row { @apply grid-cols-1; }
+  }
+  @media (max-width: 600px) {
+    .carousel-card { @apply flex-[0_0_240px]; }
+    .account-notice-banner { @apply flex-col items-start gap-3; }
+    .account-notice-banner .btn { @apply w-full justify-center; }
+    .slider-nav-btn { @apply w-9 h-9; }
+    .slider-nav-btn.prev-btn { @apply right-3; }
+    .slider-nav-btn.next-btn { @apply left-3; }
+  }
+  @media (max-width: 992px) {
+    .job-card { @apply static mt-8; }
+  }
+  @media (max-width: 480px) {
+    .step-actions { @apply flex-col-reverse; }
+    .step-actions .btn { @apply w-full justify-center; }
+    .modal-secondary-actions { @apply grid-cols-1; }
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}

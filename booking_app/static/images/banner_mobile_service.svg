@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="b1_bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050E1F"/>
+      <stop offset="45%" stop-color="#0A224E"/>
+      <stop offset="80%" stop-color="#0047AB"/>
+      <stop offset="100%" stop-color="#0066FF"/>
+    </linearGradient>
+    <linearGradient id="b1_cyan" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D2FF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="b1_gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#FDE68A"/>
+    </linearGradient>
+    <filter id="b1_glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#00D2FF" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="450" fill="url(#b1_bg)" rx="16"/>
+  
+  <!-- Subtle Grid Pattern -->
+  <g opacity="0.06" stroke="#FFFFFF" stroke-width="1">
+    <line x1="0" y1="90" x2="1400" y2="90"/>
+    <line x1="0" y1="180" x2="1400" y2="180"/>
+    <line x1="0" y1="270" x2="1400" y2="270"/>
+    <line x1="0" y1="360" x2="1400" y2="360"/>
+    <line x1="200" y1="0" x2="200" y2="450"/>
+    <line x1="400" y1="0" x2="400" y2="450"/>
+    <line x1="600" y1="0" x2="600" y2="450"/>
+    <line x1="800" y1="0" x2="800" y2="450"/>
+    <line x1="1000" y1="0" x2="1000" y2="450"/>
+    <line x1="1200" y1="0" x2="1200" y2="450"/>
+  </g>
+
+  <!-- Left Visual Illustration: High-Tech Mobile Workshop & Luxury Car -->
+  <g transform="translate(80, 50)">
+    <!-- Ambient Glow Circle -->
+    <circle cx="280" cy="180" r="160" fill="#00D2FF" opacity="0.12" filter="url(#b1_glow)"/>
+    
+    <!-- Speed Lines -->
+    <path d="M 50 120 L 250 120 M 20 160 L 320 160 M 70 200 L 280 200 M 40 240 L 350 240" stroke="#00D2FF" stroke-width="2.5" opacity="0.35" stroke-dasharray="12,10"/>
+    
+    <!-- Service Van Silhouette -->
+    <path d="M 120 220 L 140 140 L 240 140 L 280 170 L 380 170 L 380 240 L 120 240 Z" fill="#0C2554" stroke="#00D2FF" stroke-width="3"/>
+    <rect x="150" y="155" width="70" height="35" rx="4" fill="#0066FF" opacity="0.6"/>
+    <polygon points="250,175 275,175 265,195 240,195" fill="#00D2FF" opacity="0.7"/>
+    
+    <!-- Van Wheels -->
+    <circle cx="180" cy="240" r="24" fill="#050E1F" stroke="#00D2FF" stroke-width="4"/>
+    <circle cx="180" cy="240" r="10" fill="#00D2FF"/>
+    <circle cx="330" cy="240" r="24" fill="#050E1F" stroke="#00D2FF" stroke-width="4"/>
+    <circle cx="330" cy="240" r="10" fill="#00D2FF"/>
+    
+    <!-- Van Brand Text -->
+    <text x="310" y="210" font-family="'Segoe UI', sans-serif" font-size="16" font-weight="900" fill="#FFFFFF" letter-spacing="2">EGS SERVICE</text>
+
+    <!-- Glowing Diagnostic Beam -->
+    <path d="M 380 180 L 490 210 L 490 250 L 380 230 Z" fill="url(#b1_cyan)" opacity="0.2"/>
+
+    <!-- Sports Car Silhouette -->
+    <path d="M 320 250 C 350 230, 400 220, 460 220 C 500 220, 520 205, 550 205 C 575 205, 595 220, 620 230 L 640 250 Z" fill="#09204A" stroke="#00D2FF" stroke-width="3" filter="url(#b1_glow)"/>
+    <circle cx="370" cy="255" r="18" fill="#050E1F" stroke="#00D2FF" stroke-width="3"/>
+    <circle cx="580" cy="255" r="18" fill="#050E1F" stroke="#00D2FF" stroke-width="3"/>
+    
+    <!-- Headlight Beam -->
+    <polygon points="635,238 720,225 730,265 635,248" fill="#00D2FF" opacity="0.35"/>
+    
+    <!-- Pulse Radar Icon -->
+    <circle cx="210" cy="110" r="18" fill="none" stroke="#00D2FF" stroke-width="2" opacity="0.8"/>
+    <circle cx="210" cy="110" r="8" fill="#00D2FF"/>
+    <path d="M 200 90 A 25 25 0 0 1 220 90" stroke="#00D2FF" stroke-width="2.5" fill="none"/>
+    <path d="M 192 80 A 38 38 0 0 1 228 80" stroke="#00D2FF" stroke-width="2.5" fill="none"/>
+  </g>
+
+  <!-- Right Typography / Hero Offer -->
+  <g transform="translate(680, 75)" text-anchor="end">
+    <!-- Badge -->
+    <rect x="230" y="0" width="370" height="36" rx="18" fill="rgba(0, 210, 255, 0.15)" stroke="#00D2FF" stroke-width="1.5"/>
+    <circle cx="575" cy="18" r="5" fill="#00D2FF"/>
+    <text x="560" y="24" font-family="'Cairo', 'Segoe UI', Tahoma, sans-serif" font-size="14" font-weight="800" fill="#00D2FF">👑 ورشة الصيانة المتنقلة الفاخرة الأولى في مصر</text>
+
+    <!-- Main Headline -->
+    <text x="600" y="85" font-family="'Cairo', 'Segoe UI', Tahoma, sans-serif" font-size="38" font-weight="900" fill="#FFFFFF">
+      صيانة سيارتك.. <tspan fill="url(#b1_cyan)">لحد باب بيتك</tspan>
+    </text>
+
+    <!-- Subtitle -->
+    <text x="600" y="130" font-family="'Cairo', 'Segoe UI', Tahoma, sans-serif" font-size="18" font-weight="600" fill="rgba(255, 255, 255, 0.9)">
+      فحص كمبيوتر دقيق وتغيير زيوت وفلاتر بضغط الشفط في الشيخ زايد و6 أكتوبر
+    </text>
+    <text x="600" y="160" font-family="'Cairo', 'Segoe UI', Tahoma, sans-serif" font-size="16" font-weight="500" fill="#A7F3D0">
+      ✓ صيانة نظيفة 100% بدون أي فوضى أو قطرة زيت واحدة في موقعك
+    </text>
+
+    <!-- 3 Mini Badges -->
+    <g transform="translate(180, 195)">
+      <!-- Badge 1 -->
+      <rect x="290" y="0" width="130" height="34" rx="8" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.2)"/>
+      <text x="355" y="22" font-family="'Cairo', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">⏱️ وصول 45 دقيقة</text>
+
+      <!-- Badge 2 -->
+      <rect x="145" y="0" width="135" height="34" rx="8" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.2)"/>
+      <text x="212" y="22" font-family="'Cairo', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🛡️ ضمان 6 أشهر</text>
+
+      <!-- Badge 3 -->
+      <rect x="0" y="0" width="135" height="34" rx="8" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.2)"/>
+      <text x="67" y="22" font-family="'Cairo', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">⚡ فحص 35 نقطة</text>
+    </g>
+
+    <!-- CTA Button Graphic -->
+    <g transform="translate(380, 255)">
+      <rect x="0" y="0" width="220" height="48" rx="12" fill="url(#b1_cyan)" filter="url(#b1_glow)"/>
+      <text x="110" y="30" font-family="'Cairo', sans-serif" font-size="16" font-weight="900" fill="#050E1F" text-anchor="middle">احجز صيانة سيارتك الآن 🚀</text>
+    </g>
+  </g>
+</svg>
